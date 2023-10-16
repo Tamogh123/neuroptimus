@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Neuroptimus tutorial &mdash; Neuroptimus 0.1 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=e031e9a9"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="neuroptimus module" href="neuroptimus.html" />
+    <link rel="prev" title="Installation" href="install.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Neuroptimus
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Neuroptimus tutorial</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#target-data-tab">Target data tab</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#model-tab">Model tab</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#settings-tab">Settings tab</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#fitness-tab">Fitness tab</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#run-tab">Run tab</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#results-tab">Results tab</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#statistics-tab">Statistics tab</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#other-windows">Other windows</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="neuroptimus.html">neuroptimus module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">neuroptimus</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Neuroptimus</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Neuroptimus tutorial</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/tutorial.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="neuroptimus-tutorial">
+<h1>Neuroptimus tutorial<a class="headerlink" href="#neuroptimus-tutorial" title="Permalink to this heading"></a></h1>
+<section id="target-data-tab">
+<h2>Target data tab<a class="headerlink" href="#target-data-tab" title="Permalink to this heading"></a></h2>
+<p>After the program started, the first tab will appear where the user can select the file containing the target data. The user must specify the path to this file, and the working directory (base directory)
+where the outputs will be written. Apart from these the user must input the requested parameters of the
+trace set they want to use. After loading the selected file, the user can check if the traces were loaded
+properly with the help of a plot which displays all the traces concatenated and with the help of a tree
+display. The concatenation is performed only for displaying purposes, the traces are otherwise handled
+separately. The program only handles one input file (loading a new file will overwrite the existing one),
+but with an arbitrary number of traces.</p>
+<figure class="align-center">
+<img alt="_images/um001.png" src="_images/um001.png" />
+</figure>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>A</p></td>
+<td><p>Path to input data.</p></td>
+</tr>
+<tr class="row-even"><td><p>B</p></td>
+<td><p>Select the location of the input data.</p></td>
+</tr>
+<tr class="row-odd"><td><p>C</p></td>
+<td><p>Indicates whether the input file also contains time.</p></td>
+</tr>
+<tr class="row-even"><td><p>D</p></td>
+<td><p>Type of input (voltage, current trace or features).</p></td>
+</tr>
+<tr class="row-odd"><td><p>E</p></td>
+<td><p>Path to base directory (resulting files will be
+stored here).</p></td>
+</tr>
+<tr class="row-even"><td><p>F</p></td>
+<td><p>Select the base location.</p></td>
+</tr>
+<tr class="row-odd"><td><p>G</p></td>
+<td><p>Tree!</p></td>
+</tr>
+<tr class="row-even"><td><p>G</p></td>
+<td><p>Number of traces in file (trace set).</p></td>
+</tr>
+<tr class="row-odd"><td><p>H</p></td>
+<td><p>Units of the data.</p></td>
+</tr>
+<tr class="row-even"><td><p>I</p></td>
+<td><p>Length of trace(s). (in case of multiple traces, they
+must have the same length)</p></td>
+</tr>
+<tr class="row-odd"><td><p>J</p></td>
+<td><p>Sampling frequency (in case of multiple traces,
+it must be the same for all).</p></td>
+</tr>
+<tr class="row-even"><td><p>K</p></td>
+<td><p>Loads the target data from the given file.</p></td>
+</tr>
+<tr class="row-odd"><td><p>L</p></td>
+<td><p>Displays the loaded trace (if given file contains
+more, the trace will be concatenated for
+displaying).</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="model-tab">
+<h2>Model tab<a class="headerlink" href="#model-tab" title="Permalink to this heading"></a></h2>
+<p>On the Model tab the user can specify the simulator which can be Neuron or external.
+If Neuron is used as the simulator then the model file must contain only the necessary
+structure and mechanisms (without any graphical interface or runtime modification). The model can be loaded after selecting the model file and the
+special folder where the necessary .mod files are located (optional).
+As Neuron cannot load external mechanisms after startup, if the special files were not found, the software must be
+restarted. Once the model is loaded successfully, the content of the model will be displayed, and the
+user can choose the parameters to be optimized by selecting them from the list and pressing the “set” button. Removing a
+parameter can be performed in a similar fashion.
+Alternatively, instead of choosing parameters from the list, the user can load or create a special python function which defines high level parameters to be optimized and maps them onto actual model parameters. See example for user function in test cases 2, 3 and 6.</p>
+<figure class="align-center">
+<img alt="_images/um003.png" src="_images/um003.png" />
+</figure>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>A</p></td>
+<td><p>Simulator type selection (Neuron or external)</p></td>
+</tr>
+<tr class="row-even"><td><p>B</p></td>
+<td><p>Path to model file.</p></td>
+</tr>
+<tr class="row-odd"><td><p>C</p></td>
+<td><p>Select the model file.</p></td>
+</tr>
+<tr class="row-even"><td><p>D</p></td>
+<td><p>Loads the specified model.</p></td>
+</tr>
+<tr class="row-odd"><td><p>E</p></td>
+<td><p>Path to special files (the compiled mod files for
+Neuron). This should point to a folder that
+contains a subfolder with the compiled files (e.g.: to a
+folder which has an x86-64 subdirectory)</p></td>
+</tr>
+<tr class="row-even"><td><p>F</p></td>
+<td><p>Select special file location.</p></td>
+</tr>
+<tr class="row-odd"><td><p>G</p></td>
+<td><p>Displays the recognized parameters. These can be
+selected for optimization. If the parameters you
+need are missing, you can create a user-defined
+function.</p></td>
+</tr>
+<tr class="row-even"><td><p>H</p></td>
+<td><p>Opens the window to define/load your own
+function for the optimization.</p></td>
+</tr>
+<tr class="row-odd"><td><p>I</p></td>
+<td><p>Adds the currently selected parameter to the list of
+parameters subject to optimization.</p></td>
+</tr>
+<tr class="row-even"><td><p>J</p></td>
+<td><p>Removes the parameter from the aforementioned list.</p></td>
+</tr>
+</tbody>
+</table>
+<p>Choosing External as the simulator allows the user to call an arbitrary executable file to perform the simulations.</p>
+<figure class="align-center">
+<img alt="_images/um004.png" src="_images/um004.png" />
+</figure>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>A</p></td>
+<td><p>Here you can give the command which runs the model in an
+external simulator.</p></td>
+</tr>
+<tr class="row-even"><td><p>B</p></td>
+<td><p>The number of parameters subject to optimization</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="settings-tab">
+<h2>Settings tab<a class="headerlink" href="#settings-tab" title="Permalink to this heading"></a></h2>
+<p>The Settings tab defines the stimulation and recording protocol for the simulations. The user can select the
+stimulation protocol which can be either current clamp or voltage clamp (the voltage clamp is
+implemented as a SEClamp from Neuron). The stimulus type can also be selected, and can either be a step protocol
+or a custom waveform. If the step protocol is selected the properties of the step can be specified. See example for custom waveform in test case 3.
+In case of multiple stimuli, only the amplitude of the stimuli can vary, no other parameter (position of stimulus, duration, delay, etc) can be changed.
+The user can make use of external files here as well by selecting the custom waveform as stimulus
+type. After the stimulation parameters are selected, the user must choose a section and a position inside
+that section to stimulate the model.
+In the second column the parameters regarding the simulation and the recording process can be given.
+The user must give an initial voltage parameter, the length of the simulation and the integration step
+used for calculations (variable time step methods are not supported yet). After these settings are done,
+the user can select the parameter to be measured (either current or voltage), the section and the position
+where the measurement takes place.</p>
+<figure class="align-center">
+<img alt="_images/um006.png" src="_images/um006.png" />
+</figure>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>A</p></td>
+<td><p>Stimulation protocol (Vclamp or Iclamp).</p></td>
+</tr>
+<tr class="row-even"><td><p>B</p></td>
+<td><p>Type of the stimulus (Step protocol or Custom
+Waveform).</p></td>
+</tr>
+<tr class="row-odd"><td><p>C</p></td>
+<td><p>Opens the window for specifying step amplitudes
+or loading custom waveform (depending on the previous options).</p></td>
+</tr>
+<tr class="row-even"><td><p>D</p></td>
+<td><p>Delay of stimulus onset.</p></td>
+</tr>
+<tr class="row-odd"><td><p>E</p></td>
+<td><p>Duration of stimulus.</p></td>
+</tr>
+<tr class="row-even"><td><p>F</p></td>
+<td><p>Section which receives stimulus.</p></td>
+</tr>
+<tr class="row-odd"><td><p>G</p></td>
+<td><p>Location of stimulation inside the section.</p></td>
+</tr>
+<tr class="row-even"><td><p>H</p></td>
+<td><p>The parameter to be recorded.</p></td>
+</tr>
+<tr class="row-odd"><td><p>I</p></td>
+<td><p>The section where the recordings take place.</p></td>
+</tr>
+<tr class="row-even"><td><p>J</p></td>
+<td><p>Location inside the recording section.</p></td>
+</tr>
+<tr class="row-odd"><td><p>K</p></td>
+<td><p>Initial membrane potential.</p></td>
+</tr>
+<tr class="row-even"><td><p>L</p></td>
+<td><p>Length of the recording.</p></td>
+</tr>
+<tr class="row-odd"><td><p>M</p></td>
+<td><p>Integration step size.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="fitness-tab">
+<h2>Fitness tab<a class="headerlink" href="#fitness-tab" title="Permalink to this heading"></a></h2>
+<p>On the Fitness tab the combination of fitness functions (error functions / objective functions / cost functions) can be selected with the desired weights.
+Weights can be normalized so that they sum to 1, but this is optional. The user can fine tune the behavior of the functions by giving parameters to them
+(the value of the same parameter should be the same across the functions).</p>
+<figure class="align-center">
+<img alt="_images/um008.png" src="_images/um008.png" />
+</figure>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>A</p></td>
+<td><p>List of available fitness functions and weights assigned to the selected functions.</p></td>
+</tr>
+<tr class="row-even"><td><p>B</p></td>
+<td><p>Normalizes the weights (optional).</p></td>
+</tr>
+<tr class="row-odd"><td><p>C</p></td>
+<td><p>Parameters passed to the fitness functions.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="run-tab">
+<h2>Run tab<a class="headerlink" href="#run-tab" title="Permalink to this heading"></a></h2>
+<p>On the Run tab, the user can select the desired algorithm from the lists that appear under tabs corresponding to the various optimization packages and set parameters of the selected algorithm. The program also requires
+boundaries for the parameters.</p>
+<figure class="align-center">
+<img alt="_images/um009.png" src="_images/um009.png" />
+</figure>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>A</p></td>
+<td><p>Avaiable algorithms (grouped by package)</p></td>
+</tr>
+<tr class="row-even"><td><p>B</p></td>
+<td><p>Boundaries of the parameters subject to optimization.</p></td>
+</tr>
+<tr class="row-odd"><td><p>C</p></td>
+<td><p>Parameters of the
+selected optimization algorithm.</p></td>
+</tr>
+<tr class="row-even"><td><p>D</p></td>
+<td><p>Perform a single evaluation for a specific parameter set.</p></td>
+</tr>
+<tr class="row-odd"><td><p>E</p></td>
+<td><p>Run the optimization.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="results-tab">
+<h2>Results tab<a class="headerlink" href="#results-tab" title="Permalink to this heading"></a></h2>
+<p>The Results tab shows the parameters and fitness value(s) of the best evaluation. The figure visualizes the trace of the best-fitting model and compares it the target trace (when available).</p>
+<figure class="align-center">
+<img alt="_images/um011.png" src="_images/um011.png" />
+</figure>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>A</p></td>
+<td><p>The resulting parameters.</p></td>
+</tr>
+<tr class="row-even"><td><p>B</p></td>
+<td><p>The trace(s) obtained with the resulting
+parameters.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="statistics-tab">
+<h2>Statistics tab<a class="headerlink" href="#statistics-tab" title="Permalink to this heading"></a></h2>
+<p>This final tab displays some additional statistics for the final population and allows the user to view time evolution of the fitness statistics across generations.</p>
+<figure class="align-center">
+<img alt="_images/um012.png" src="_images/um012.png" />
+</figure>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>A</p></td>
+<td><p>The resulting parameters.</p></td>
+</tr>
+<tr class="row-even"><td><p>B</p></td>
+<td><p>Fitness statistics</p></td>
+</tr>
+<tr class="row-odd"><td><p>C</p></td>
+<td><p>Fitness components: name of fitness function; fitness value;calculated by the function; weight assigned to the function; the weighted fitness value; the resulting cumulated fitness value.</p></td>
+</tr>
+<tr class="row-even"><td><p>D</p></td>
+<td><p>Displays the progression of the fitness statistics of the population through the generations.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="other-windows">
+<h2>Other windows<a class="headerlink" href="#other-windows" title="Permalink to this heading"></a></h2>
+<p>User function window</p>
+<figure class="align-center">
+<img alt="_images/um014.png" src="_images/um014.png" />
+</figure>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>A</p></td>
+<td><p>Entry field for function definition.</p></td>
+</tr>
+<tr class="row-even"><td><p>B</p></td>
+<td><p>Load a previously defined function from a txt.</p></td>
+</tr>
+<tr class="row-odd"><td><p>C</p></td>
+<td><p>Done editing, save function and continue.</p></td>
+</tr>
+<tr class="row-even"><td><p>D</p></td>
+<td><p>Discard function and go back.</p></td>
+</tr>
+</tbody>
+</table>
+<p>Stimuli window</p>
+<p>First the user must select the number of stimuli and press the Create button. Next the amplitude of each step must be given.</p>
+<figure class="align-center">
+<img alt="_images/um015.png" src="_images/um015.png" />
+</figure>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>A</p></td>
+<td><p>Number of stimuli.</p></td>
+</tr>
+<tr class="row-even"><td><p>B</p></td>
+<td><p>Create the specified number of stimuli.</p></td>
+</tr>
+<tr class="row-odd"><td><p>C</p></td>
+<td><p>Specify the amplitude of the stimuli.</p></td>
+</tr>
+</tbody>
+</table>
+<p>Boundary window</p>
+<p>The user can either set lower and upper bounds explicitly or load these values from a previously saved file.</p>
+<figure class="align-center">
+<img alt="_images/um016.png" src="_images/um016.png" />
+</figure>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>A</p></td>
+<td><p>The list of selected parameters.</p></td>
+</tr>
+<tr class="row-even"><td><p>B</p></td>
+<td><p>Lower bounds.</p></td>
+</tr>
+<tr class="row-odd"><td><p>C</p></td>
+<td><p>Upper bounds.</p></td>
+</tr>
+<tr class="row-even"><td><p>D</p></td>
+<td><p>Boundaries are set, continue.</p></td>
+</tr>
+<tr class="row-odd"><td><p>E</p></td>
+<td><p>Save boundaries to file.</p></td>
+</tr>
+<tr class="row-even"><td><p>F</p></td>
+<td><p>Load boundaries from file.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="install.html" class="btn btn-neutral float-left" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="neuroptimus.html" class="btn btn-neutral float-right" title="neuroptimus module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Mate Mohacsi.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,12 @@
+bluepyopt>=1.13.90
+cmaes>=0.9.1
+efel>=4.1.54
+git+https://github.com/aarongarrett/inspyred
+ipyparallel>=8.6.1
+matplotlib>=3.6.2
+nest>=0.4.1
+NEURON>=8.2.2
+numpy>=1.24.1
+pygmo>=2.16.1
+PyQt5>=5.15.9
+scipy>=1.8.0
