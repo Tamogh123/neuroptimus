@@ -1,0 +1,97 @@
+{
+    "opt_name": "load_new_passive_3dscale_BAYESIAN_INFERENCE_23_Aug_2024_06:17:19:249221",
+    "seed": 1234,
+    "models": {
+        "model_name": "load_new_passive_3dscale",
+        "model_author": "tamogh-Inspiron-15-3511"
+    },
+    "parameters": [
+        {
+            "name": "cm",
+            "min_boundary": "0.0",
+            "max_boundary": "3.0",
+            "optimum": "0.26332772911188734"
+        },
+        {
+            "name": "Ra",
+            "min_boundary": "0.0",
+            "max_boundary": "200.0",
+            "optimum": "199.95331549540492"
+        }
+    ],
+    "error_function": [
+        {
+            "name": "cm",
+            "value": "0.0",
+            "weight": "3.0",
+            "weighted_value": "0.26332772911188734"
+        },
+        {
+            "name": "Ra",
+            "value": "0.0",
+            "weight": "200.0",
+            "weighted_value": "199.95331549540492"
+        }
+    ],
+    "algorithm": [
+        {
+            "algorithm_name": "BAYESIAN",
+            "algorithm_package": "INFERENCE",
+            "algorithm_parameters": [
+                {
+                    "parameter_name": "prior_mean",
+                    "parameter_value": "[1.2, 110]"
+                },
+                {
+                    "parameter_name": "prior_std",
+                    "parameter_value": "[3, 80]"
+                },
+                {
+                    "parameter_name": "ndim",
+                    "parameter_value": "2"
+                },
+                {
+                    "parameter_name": "nwalkers",
+                    "parameter_value": "6"
+                },
+                {
+                    "parameter_name": "starting_point",
+                    "parameter_value": "[1.2, 115]"
+                },
+                {
+                    "parameter_name": "noise",
+                    "parameter_value": "colour"
+                },
+                {
+                    "parameter_name": "D",
+                    "parameter_value": "10"
+                },
+                {
+                    "parameter_name": "lamb",
+                    "parameter_value": "0.02"
+                },
+                {
+                    "parameter_name": "sigma",
+                    "parameter_value": "0.1"
+                }
+            ]
+        }
+    ],
+    "target_data": [
+        {
+            "data_type": "voltage",
+            "file_name": "obs_data.dat",
+            "number_of_traces": 1,
+            "stim_delay": 200.0,
+            "stim_duration": 1000.0,
+            "length_ms": 1500.0,
+            "sampling_frequency": 10000.0,
+            "stim_amp": [
+                {
+                    "stim_amplitude": 0.003
+                }
+            ]
+        }
+    ],
+    "created_at": "2024-08-23T06:17:19.249244Z"
+}

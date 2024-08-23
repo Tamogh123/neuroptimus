@@ -1,0 +1,97 @@
+{
+    "attributes": {
+        "D": 0,
+        "adjusted_params": [
+            "soma cm",
+            "soma Ra"
+        ],
+        "base_dir": "/home/tamogh/neuroptimus/neuroptimus/new_test_files/testcase_1_hh_pas_surrogate",
+        "boundaries": [
+            [
+                0.5,
+                50.0
+            ],
+            [
+                3.0,
+                150.0
+            ]
+        ],
+        "current_algorithm": {
+            "BAYESIAN_INFERENCE": {
+                "D": 10,
+                "lamb": 0.1,
+                "ndim": "2",
+                "noise": "colour",
+                "nwalkers": "6",
+                "prior_mean": [
+                    2.5,
+                    120
+                ],
+                "prior_std": [
+                    2,
+                    50
+                ],
+                "sigma": 0.1,
+                "starting_point": [
+                    1.2,
+                    105
+                ]
+            }
+        },
+        "feat_str": [],
+        "feats": [],
+        "input_cont_t": true,
+        "input_dir": "/home/tamogh/neuroptimus/neuroptimus/new_test_files/testcase_1_hh_pas_surrogate/input_data2.dat",
+        "input_freq": 10000.0,
+        "input_length": 400.0,
+        "input_scale": "mV",
+        "input_size": 4,
+        "lam": 0,
+        "model_path": "/home/tamogh/neuroptimus/neuroptimus/new_test_files/testcase_1_hh_pas_surrogate/hh_pas.hoc",
+        "model_spec_dir": null,
+        "noise_free_input_dir": "",
+        "num_params": 2,
+        "output_level": "0",
+        "param_vals": [
+            0,
+            0,
+            0,
+            0
+        ],
+        "prior_mean": [],
+        "prior_std": [],
+        "run_controll_dt": 0.1,
+        "run_controll_pos": 0.5,
+        "run_controll_record": "v",
+        "run_controll_sec": "soma",
+        "run_controll_tstop": 400.0,
+        "run_controll_vrest": -65.0,
+        "seed": 1234,
+        "sig": 0,
+        "sim_command": " ",
+        "simulator": "Neuron",
+        "spike_thres": 0,
+        "spike_window": 50,
+        "start_time_stamp": 1723699418.008356,
+        "starting_points": null,
+        "stim_amp": [
+            0.1,
+            0.2,
+            0.3,
+            0.4
+        ],
+        "stim_del": 200.0,
+        "stim_dur": 300.0,
+        "stim_pos": 0.5,
+        "stim_sec": "soma",
+        "stim_type": "IClamp",
+        "type": [
+            "voltage",
+            "voltage",
+            "voltage",
+            "voltage"
+        ],
+        "u_fun_string": "",
+        "weights": []
+    }
+}

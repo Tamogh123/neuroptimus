@@ -1,0 +1,77 @@
+{
+    "attributes": {
+        "D": 0,
+        "adjusted_params": [
+            "soma cm",
+            "soma Ra"
+        ],
+        "base_dir": "/home/tamogh/neuroptimus/neuroptimus/new_test_files/testcase_2_VClamp_surrogate",
+        "boundaries": [
+            [
+                0.5,
+                50.0
+            ],
+            [
+                2.5,
+                200.0
+            ]
+        ],
+        "current_algorithm": {
+            "Random Search": {
+                "number_of_cpu": 1,
+                "size_of_population": 10
+            }
+        },
+        "feat_str": "MSE",
+        "feats": [
+            "MSE"
+        ],
+        "input_cont_t": true,
+        "input_dir": "/home/tamogh/neuroptimus/neuroptimus/new_test_files/testcase_2_VClamp_surrogate/iclamp_new_evendt.dat",
+        "input_freq": 40000.0,
+        "input_length": 500.0,
+        "input_scale": "mV",
+        "input_size": 1,
+        "lam": 0,
+        "model_path": "/home/tamogh/neuroptimus/neuroptimus/new_test_files/testcase_2_VClamp_surrogate/simple_hh_syn_vclamp_toopt2.hoc",
+        "model_spec_dir": null,
+        "noise_free_input_dir": "",
+        "num_params": 2,
+        "output_level": "0",
+        "param_vals": [
+            0,
+            0
+        ],
+        "prior_mean": [],
+        "prior_std": [],
+        "run_controll_dt": 0.025,
+        "run_controll_pos": 0.5,
+        "run_controll_record": "i",
+        "run_controll_sec": "soma",
+        "run_controll_tstop": 500.0,
+        "run_controll_vrest": -70.0,
+        "seed": 1234,
+        "sig": 0,
+        "sim_command": " ",
+        "simulator": "Neuron",
+        "spike_thres": 0.0,
+        "spike_window": 40.0,
+        "start_time_stamp": 1721133695.2148902,
+        "starting_points": [],
+        "stim_amp": [
+            70.0
+        ],
+        "stim_del": 1.0,
+        "stim_dur": 1.0,
+        "stim_pos": 0.5,
+        "stim_sec": "soma",
+        "stim_type": "VClamp",
+        "type": [
+            "voltage"
+        ],
+        "u_fun_string": "",
+        "weights": [
+            1.0
+        ]
+    }
+}

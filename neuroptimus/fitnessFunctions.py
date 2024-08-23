@@ -974,6 +974,7 @@ class fF(object):
             k_range=self.reader.number_of_traces()
         else:
             k_range=len(self.reader.features_data["stim_amp"])
+        #print(k_range)    
 
 
         if self.option.output_level == "1":
@@ -984,6 +985,7 @@ class fF(object):
         self.model.CreateStimuli(self.option.GetModelStim())
         if self.option.output_level == "1":
             print(l)
+        new_array=[]    
         for k in range(k_range):     #for k in range(self.reader.number_of_traces()):
             try:
                 add_data = [spike_frame(n - window, self.thres, n, 1, n + window, self.thres) for n in self.reader.additional_data.get(k)]
@@ -999,6 +1001,7 @@ class fF(object):
             else:
                 extra_param = self.option.GetModelRun()
                 self.model.SetStimuli(parameter, extra_param)
+
             if self.option.multi_objective:
                 if (not self.modelRunner(l,k)):
                     self.model_trace.append(self.model.record[0])
@@ -1010,13 +1013,19 @@ class fF(object):
                                 raise sizeError("model: " + str(len(self.model.record[0])) + ", target: " + str(len(self.reader.data.GetTrace(k))))
                             temp_fit.append((f(self.model.record[0],
                                                               self.reader.data.GetTrace(k), args)))
+                            print(self.model.record[0])                                  
 
                     else:
                         for f, w in zip(features, weigths):
                             temp_fit.append(self.FFun_for_Features(self.model.record[0],
                                                                 self.reader.features_data, f, k, args))
+                            print(self.model.record[0])                                    
                 else:
                         temp_fit.append(100)
+                        #print(self.model.record[0])
+                a=self.model.record
+                #print(np.array(a))
+                new_array.append(a)
             else:
                 if (not self.modelRunner(l,k)):
                     self.model_trace.append(self.model.record[0])
@@ -1029,12 +1038,47 @@ class fF(object):
                             temp_fit += w * (f(self.model.record[0],
                                                             self.reader.data.GetTrace(k), args))
 
+
                     else:
                         for f, w in zip(features, weigths):
                             temp_fit += w * self.FFun_for_Features(self.model.record[0],
                                                                 self.reader.features_data, f, k, args)    
                 else:
                         temp_fit=100
+                a=self.model.record
+                #print(np.array(a))
+                new_array.append(a)
+                        
+        #print(self.option.current_algorithm)
+        if "LIKELIHOOD_FREE"  in self.option.current_algorithm:
+            if self.option.input_size ==1:
+                x=np.array(new_array)
+                reshaped_array = x
+                return reshaped_array
+            else:
+                x=np.array(new_array)
+                reshaped_array=x.reshape(4001,int(self.option.input_size))
+                return reshaped_array
+
+        if "BAYESIAN_INFERENCE" or "VARIATIONAL_INFERENCE" or"HMC" or"NEW_HMC" or "CUSTOM_VARIATIONAL_INFERENCE" in self.option.current_algorithm :
+            if self.option.input_size == 1:
+                return np.array(self.reader.data.GetTrace(k))-np.array(self.model.record[0])  
+            else:
+                #multitrace implementation:
+                #print(self.model.record[0][:10])
+                x=np.array(new_array)
+                #print(x[:10])
+                #reshaped_array=x
+                reshaped_array = x.reshape(4001,int(self.option.input_size))
+                #print(reshaped_array.shape)
+                reshaped_data=np.array(self.reader.data.data)
+                
+                #print(reshaped_data.shape)
+                diff=reshaped_data-reshaped_array
+                print(diff)
+                #print(diff.shape)
+                return diff
+                         
         with open(self.option.base_dir+"/eval.txt", "a") as f: 
             f.write(str([temp_fit,[x for x in npcandidates]])+" \n")
         if self.option.output_level == "1":

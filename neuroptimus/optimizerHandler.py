@@ -8,6 +8,7 @@ import random
 import json
 import time
 import os
+import random
 from math import sqrt
 
 from multiprocessing import Pool
@@ -158,7 +159,220 @@ class baseOptimizer():
 			except KeyError:
 				print("error with fitness function: ",option_obj.feats," not in: ",list(self.fit_obj.calc_dict.keys()))
 
+class BAYESIAN_INFERENCE(baseOptimizer):
+    def __init__(self,reader_obj,option_obj):
+        import inference
+        baseOptimizer.__init__(self, reader_obj,  option_obj)
+        self.option_obj=option_obj
+        self.reader_obj=reader_obj
+        self.boundaries=self.option_obj.boundaries
+        self.D=self.algo_params.pop("D")
+        print(self.D)
+        self.lamb=self.algo_params.pop("lamb")
+        self.sig=self.algo_params.pop("sigma")
+        self.noise=self.algo_params.pop("noise")
+        self.prior_mean=self.algo_params.pop("prior_mean")
+        self.prior_std=self.algo_params.pop("prior_std")
+        self.ndim=self.algo_params.pop("ndim")
+        self.nwalkers=self.algo_params.pop("nwalkers")
+        self.dt=self.option_obj.run_controll_dt
+        self.a=self.algo_params.pop('starting_point')
+        print(self.a)
+        self.starting_points = self.generate_starting_points(self.a)
+        #print(self.starting_points)
+        #self.starting_points =self.algo_params.pop("starting_points")
+        self.base_dir=self.option_obj.base_dir
+        self.candidates=[]
+        self.kwargs=dict(boundaries=self.boundaries,D=self.D,lamb=self.lamb,sigma=self.sig,noise=self.noise,prior_mean=self.prior_mean,prior_std=self.prior_std,dt=self.dt)
+        print(self.kwargs)
+        
+        
+    def generate_starting_points(self, singular_list):
+        starting_points = []
+        print(singular_list)
+        print(self.nwalkers)
+        print(self.boundaries)
+        a=self.boundaries
+        print(a[0])
+        for _ in range(int(self.nwalkers)):
+            print("hello")
+            new_point = []
+            print(self.boundaries[0])
+            print(self.boundaries[0][1])
+            for i, value in zip(range(len(singular_list)),singular_list):
+                lower_bound = self.boundaries[0][i]
+                upper_bound = self.boundaries[1][i]
+                print(lower_bound,upper_bound)
+                
+                # Add a random number within the allowed range
+                perturbation = random.uniform(-20, 20)  # Adjust the range if needed
+                new_value = value + perturbation
+                
+                # Ensure the new value is within the boundaries
+                if new_value < lower_bound:
+                    new_value = lower_bound
+                elif new_value > upper_bound:
+                    new_value = upper_bound
+                print(new_value)
+                new_point.append(new_value)
+            starting_points.append(new_point)
+        print(starting_points)
+        return starting_points
+        
+        
+        
+    def Optimize(self):
+        import inference
+        bayesian_inference = inference.Bayesian_inference(self.kwargs, self.reader_obj.data.data,self.ffun,self.option_obj.adjusted_params)
+        print("done")
+        resampled_trace = bayesian_inference.resample(self.reader_obj.data.data)
+        print("done")
+        labels=bayesian_inference.labelser()
+        
+        print("done3")
+        new_dt = bayesian_inference.recompute_dt()
+        #print(new_dt)
+        bayesian_inference.generate_time_vector(self.option_obj.run_controll_tstop)
+        print("done4")
+        #bayesian_inference.initial_candidate_solution()
+        incovariance_matrix = bayesian_inference.compute_covariance()
+        print("done5")
+        samples=bayesian_inference.run_mcmc_and_plot_samples(self.base_dir,self.ndim, self.nwalkers, self.starting_points)
+        print("done6")
+        bayesian_inference.plotting(self.ndim,samples,self.base_dir)
+        print("done7")
+        self.candidates=bayesian_inference.map
+        self.label=bayesian_inference.labels
+        
+class VARIATIONAL_INFERENCE(baseOptimizer):
+    def __init__(self,reader_obj,option_obj):
+        import inference
+        baseOptimizer.__init__(self, reader_obj,  option_obj)
+        self.option_obj=option_obj
+        self.reader_obj=reader_obj
+        self.boundaries=self.option_obj.boundaries
+        self.D=self.algo_params.pop("D")
+        self.lamb=self.algo_params.pop("lamb")
+        self.sig=self.algo_params.pop("sigma")
+        self.noise=self.algo_params.pop("noise")
+        self.prior_mean=self.algo_params.pop("prior_mean")
+        self.prior_std=self.algo_params.pop("prior_std")
+        self.dt=self.option_obj.run_controll_dt
+        self.starting_points =self.algo_params.pop("starting_point")
+        self.base_dir=self.option_obj.base_dir
+        self.kwargs=dict(boundaries=self.boundaries,D=self.D,lamb=self.lamb,sigma=self.sig,noise=self.noise,prior_mean=self.prior_mean,prior_std=self.prior_std,dt=self.dt)
+        print(self.kwargs)
+    def Optimize(self):	
+        import inference
+        variational_inference = inference.Bayesian_inference(self.kwargs, self.reader_obj.data.data,self.ffun,self.option_obj.adjusted_params)
+        resampled_trace = variational_inference.resample(self.reader_obj.data.data)
+        labels=variational_inference.labelser()
+        self.label=variational_inference.labels
+        new_dt = variational_inference.recompute_dt()
+        variational_inference.generate_time_vector(self.option_obj.run_controll_tstop)
+        incovariance_matrix = variational_inference.compute_covariance()
+        Xs=variational_inference.run_variational_inference(self.base_dir,np.array(self.starting_points))
+        variational_inference.plotvi(Xs,self.base_dir)
+        self.candidates=variational_inference.map
+class CUSTOM_VARIATIONAL_INFERENCE(baseOptimizer):
+    def __init__(self,reader_obj,option_obj):
+        import inference
+        baseOptimizer.__init__(self, reader_obj,  option_obj)
+        self.option_obj=option_obj
+        self.reader_obj=reader_obj
+        self.boundaries=self.option_obj.boundaries
+        self.D=self.algo_params.pop("D")
+        self.lamb=self.algo_params.pop("lamb")
+        self.sig=self.algo_params.pop("sigma")
+        self.noise=self.algo_params.pop("noise")
+        self.prior_mean=self.algo_params.pop("prior_mean")
+        self.prior_std=self.algo_params.pop("prior_std")
+        self.dt=self.option_obj.run_controll_dt
+        self.starting_points =self.algo_params.pop("starting_point")
+        self.base_dir=self.option_obj.base_dir
+        self.kwargs=dict(boundaries=self.boundaries,D=self.D,lamb=self.lamb,sigma=self.sig,noise=self.noise,prior_mean=self.prior_mean,prior_std=self.prior_std,dt=self.dt)
+        print(self.kwargs)
+    def Optimize(self):	
+        import inference
+        variational_inference = inference.Bayesian_inference(self.kwargs, self.reader_obj.data.data,self.ffun,self.option_obj.adjusted_params)
+        resampled_trace = variational_inference.resample(self.reader_obj.data.data)
+        labels=variational_inference.labelser()
+        self.label=variational_inference.labels
+        new_dt = variational_inference.recompute_dt()
+        variational_inference.generate_time_vector(self.option_obj.run_controll_tstop)
+        incovariance_matrix = variational_inference.compute_covariance()
+        Xs=variational_inference.run_custom_variational_inference(self.base_dir,np.array(self.starting_points))
+        variational_inference.plotvi(Xs,self.base_dir)
+        self.candidates=variational_inference.map
+class LIKELIHOOD_FREE(baseOptimizer):
+    def __init__(self,reader_obj,option_obj):
+        import inference
+        #print("working till opt")
+        baseOptimizer.__init__(self, reader_obj,  option_obj)
+        self.option_obj=option_obj
+        self.reader_obj=reader_obj
+        #print(self.option_obj)
+        self.boundaries=self.option_obj.boundaries
+        print(self.boundaries)
+        self.D=self.algo_params.pop("D")
+        print(self.D)
+        self.lamb=self.algo_params.pop("lamb")
+        self.sig=self.algo_params.pop("sigma")
+        self.noise=self.algo_params.pop("noise")
+        self.prior_mean=self.algo_params.pop("prior_mean")
+        self.prior_std=self.algo_params.pop("prior_std")
+        self.dt=self.option_obj.run_controll_dt
+        print(self.dt)
+        self.starting_points =self.algo_params.pop("starting_point")
+        print(self.starting_points)
+        self.base_dir=self.option_obj.base_dir
+        print(self.base_dir)
+        self.kwargs=dict(boundaries=self.boundaries,D=self.D,lamb=self.lamb,sigma=self.sig,noise=self.noise,prior_mean=self.prior_mean,prior_std=self.prior_std,dt=self.dt)
+        print(self.kwargs)
+    def Optimize(self):	
+        import inference
+        print('working-1')
+        li_inference = inference.Bayesian_inference(self.kwargs, self.reader_obj.data.data,self.ffun,self.option_obj.adjusted_params,self.option_obj.current_algorithm)
+        labels=li_inference.labelser()
+        self.label=li_inference.labels
+        print(self.label)
+        resampled_trace = li_inference.resample(self.reader_obj.data.data)
+        journal = li_inference.run_inference()
+        li_inference.plot_results(journal,self.base_dir)
+        self.candidates=li_inference.map
 
+
+
+
+class NEW_HMC(baseOptimizer):
+    def __init__(self,reader_obj,option_obj):
+        import inference
+        baseOptimizer.__init__(self, reader_obj,  option_obj)
+        self.option_obj=option_obj
+        self.reader_obj=reader_obj
+        self.boundaries=self.option_obj.boundaries
+        self.D=self.algo_params.pop("D")
+        self.lamb=self.algo_params.pop("lamb")
+        self.sig=self.algo_params.pop("sigma")
+        self.noise=self.algo_params.pop("noise")
+        self.prior_mean=self.algo_params.pop("prior_mean")
+        self.prior_std=self.algo_params.pop("prior_std")
+        self.dt=self.option_obj.run_controll_dt
+        self.starting_points =self.algo_params.pop("starting_points")
+        self.base_dir=self.option_obj.base_dir
+        self.kwargs=dict(boundaries=self.boundaries,D=self.D,lamb=self.lamb,sigma=self.sig,noise=self.noise,prior_mean=self.prior_mean,prior_std=self.prior_std,dt=self.dt)
+        print(self.kwargs)
+    def Optimize(self):	
+        import inference
+        hamiltonian_inference = inference.Bayesian_inference(self.kwargs, self.reader_obj.data.data,self.ffun,self.option_obj.adjusted_params,self.option_obj.current_algorithm)
+        resampled_trace = hamiltonian_inference.resample(self.reader_obj.data.data)
+        labels=hamiltonian_inference.labelser()
+        new_dt = hamiltonian_inference.recompute_dt()
+        a=hamiltonian_inference.generate_time_vector(self.option_obj.run_controll_tstop)
+        incovariance_matrix =hamiltonian_inference.compute_covariance()
+        samples = hamiltonian_inference.run_inference(n_samples=100, step_size=0.01, num_steps=10)
+        hamiltonian_inference.plot_hmc_results(samples, self.base_dir)
+        
 
 class InspyredAlgorithmBasis(baseOptimizer):
 	def __init__(self, reader_obj,  option_obj):

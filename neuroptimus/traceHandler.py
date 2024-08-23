@@ -125,6 +125,10 @@ class Trace:
         """
         print("\n".join(map(str,(n for n in self.data))))
     # returns one column from the data matrix: returns one trace
+    def Printstore(self):
+        data_str = "\n".join(map(str, (n for n in self.data)))
+        return data_str
+    
     def GetTrace(self,index):
         """
         Returns the trace having the index ``index`` form the container. Always use this function to get a given
@@ -217,10 +221,11 @@ class DATA():
     #need more rule for spike timings and other
         pynn_rule=re.compile("# variable = [a-zA-Z]")
         neuron_rule_time=re.compile("[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?\s-?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?")
-        neuron_rule=re.compile("-?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?$|(-?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?\t)")
+        neuron_rule=re.compile("-?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?$|(-?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?)")
         spike_times_rule=re.compile("# variable = spikes")
         rules=[pynn_rule,neuron_rule_time,neuron_rule,spike_times_rule]
         result=[n!=None for n in [re.match(k,line) for k in rules ] ]
+        print(result)
         return [self.PyNNReader,self.traceReaderTime,self.traceReader,self.spikeTimeReader][result.index(True)]
 
     def Read(self,path=[os.getcwd()+"/inputTrace.txt"],no_traces=1,scale="mV",t_length=1000,freq=1000,trace_type="voltage"):
@@ -250,10 +255,11 @@ class DATA():
             elif trace_type=="features":
                 self.features_data=self.abstractDataReader(path)
             else:
+                #print(trace_type)
                 self.data=self.detect_format(tmp[4])(path,no_traces,scale,t_length,freq,trace_type)
 
 
-        #print self.data.data[0:10]
+        l=self.data.data
 
 
     def traceReader(self,path,no_traces,scale,t_length,freq,trace_type):
@@ -316,6 +322,8 @@ class DATA():
                             temp.reverse()
                             temp.pop()
                             temp.reverse()
+                            #print(len(temp))
+                            #print(trace.no_traces)
                         #print temp
                             if len(temp)==trace.no_traces:
                                 #self.t.append(real_range(0,self.step,int(self.t_length)))

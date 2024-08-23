@@ -91,6 +91,7 @@ class optionHandler(object):
 		#exp data settings
 		self.base_dir="" # path to base directory
 		self.input_dir="" # path to input file
+		self.noise_free_input_dir = "" 
 		self.input_size=0 # no_traces
 		self.input_scale="" # scale of input
 		self.input_length=1 # length of input
@@ -124,6 +125,13 @@ class optionHandler(object):
 		self.run_controll_sec="" # section where the recording takes place
 		self.run_controll_pos=0 # position where the recording takes place
 		self.run_controll_vrest=0 # resting voltage
+		
+		#Noise parameters and bayesian parameters
+		self.D=0
+		self.lam=0
+		self.sig=0
+		self.prior_mean=[]
+		self.prior_std=[]
 
 		#optimizer settings
 		self.seed=None
@@ -163,10 +171,12 @@ class optionHandler(object):
 		if isinstance(self.current_algorithm, str):
 			self.algorithm_name=re.sub('_+',"_",re.sub("[\(\[].*?[\)\]]", "", self.current_algorithm).replace("-","_").replace(" ","_")).upper()
 			self.algorithm_parameters=self.algorithm_parameters_dict[self.algorithm_name]
+			#print(self.algorithm_name)
 		else:
 			self.algorithm_name=re.sub('_+',"_",re.sub("[\(\[].*?[\)\]]", "", list(self.current_algorithm.keys())[0]).replace("-","_").replace(" ","_")).upper()
 			self.algorithm_parameters=self.algorithm_parameters_dict[self.algorithm_name]
 			self.algorithm_parameters.update(list(self.current_algorithm.values())[0])
+			#print(self.algorithm_name)
 		
 
 
@@ -184,6 +194,7 @@ class optionHandler(object):
 		:param options: the path of the directory
 		"""
 		self.base_dir=options
+		
 
 	# returns the current input file options
 	def GetInputOptions(self):
@@ -206,6 +217,16 @@ class optionHandler(object):
 				self.input_freq,
 				self.input_cont_t,
 				self.type[-1]]
+	#making another getnoise input file :
+	def GetNoiseInputOptions(self):
+		return [self.noise_free_input_dir,
+				self.input_size,
+				self.input_scale,
+				self.input_length,
+				self.input_freq,
+				self.input_cont_t,
+				self.type[-1]]	
+	
 
 	# sets the input file options to the given values
 	def SetInputOptions(self,options):

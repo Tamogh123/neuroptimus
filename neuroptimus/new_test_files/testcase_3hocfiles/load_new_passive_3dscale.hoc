@@ -1,0 +1,7 @@
+load_file(1,"morphology_160526-C2.hoc")
+load_file(1,"biophys_passive_3dscale.hoc")
+
+shrinkage_correction_3d()
+setNseg()
+
+access apic[93]

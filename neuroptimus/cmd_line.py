@@ -2,10 +2,12 @@ import sys
 import os
 import Core
 import json
+import traceHandler
+import modelHandler
+import numpy as np
 from pylab import *
+import inference
 ioff()
-
-
 
 def main(fname, param=None):
     """
@@ -27,6 +29,7 @@ def main(fname, param=None):
     core = Core.coreModul()
     if param != None:
         core.option_handler.output_level = param.lstrip("-v_level=")
+        core.Print()
     core.option_handler.ReadJson(json_data['attributes'])
     core.Print()
     kwargs = {"file" : core.option_handler.GetFileOption(),
@@ -40,9 +43,17 @@ def main(fname, param=None):
     kwargs = {"stim" : core.option_handler.GetModelStim(), "stimparam" : core.option_handler.GetModelStimParam()}
     core.SecondStep(kwargs)
     kwargs = None
-    core.ThirdStep(kwargs)
-    core.FourthStep()
-    print("resulting parameters: ", core.optimal_params)
+    if "BAYESIAN_INFERENCE" or "VARIATIONAL_INFERENCE" or "CUSTOM_VARIATIONAL_INFERENCE" in core.option_handler.current_algorithm.keys():
+             core.third_inferstep(kwargs)
+             core.fourthinfer()
+    elif "LIKELIHOOD_FREE" or "HMC" or "NEW_HMC"  in core.option_handler.current_algorithm.keys():
+             core.third_inferstep(kwargs)
+             core.fourthinfer()
+    else:     
+        core.ThirdStep(kwargs)
+        core.FourthStep()
+        print("resulting parameters: ", core.optimal_params)
+    
     
 
 

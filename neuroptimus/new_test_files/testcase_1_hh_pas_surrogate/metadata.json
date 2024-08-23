@@ -1,0 +1,106 @@
+{
+    "opt_name": "hh_pas_BAYESIAN_INFERENCE_15_Aug_2024_05:26:57:251934",
+    "seed": 1234,
+    "models": {
+        "model_name": "hh_pas",
+        "model_author": "tamogh-Inspiron-15-3511"
+    },
+    "parameters": [
+        {
+            "name": "soma cm",
+            "min_boundary": "0.5",
+            "max_boundary": "3.0",
+            "optimum": "2.9999967310637805"
+        },
+        {
+            "name": "soma Ra",
+            "min_boundary": "50.0",
+            "max_boundary": "150.0",
+            "optimum": "104.93910193754267"
+        }
+    ],
+    "error_function": [
+        {
+            "name": "soma cm",
+            "value": "0.5",
+            "weight": "3.0",
+            "weighted_value": "2.9999967310637805"
+        },
+        {
+            "name": "soma Ra",
+            "value": "50.0",
+            "weight": "150.0",
+            "weighted_value": "104.93910193754267"
+        }
+    ],
+    "algorithm": [
+        {
+            "algorithm_name": "BAYESIAN",
+            "algorithm_package": "INFERENCE",
+            "algorithm_parameters": [
+                {
+                    "parameter_name": "prior_mean",
+                    "parameter_value": "[2.5, 120]"
+                },
+                {
+                    "parameter_name": "prior_std",
+                    "parameter_value": "[2, 50]"
+                },
+                {
+                    "parameter_name": "ndim",
+                    "parameter_value": "2"
+                },
+                {
+                    "parameter_name": "nwalkers",
+                    "parameter_value": "6"
+                },
+                {
+                    "parameter_name": "starting_point",
+                    "parameter_value": "[1.2, 105]"
+                },
+                {
+                    "parameter_name": "noise",
+                    "parameter_value": "colour"
+                },
+                {
+                    "parameter_name": "D",
+                    "parameter_value": "10"
+                },
+                {
+                    "parameter_name": "lamb",
+                    "parameter_value": "0.1"
+                },
+                {
+                    "parameter_name": "sigma",
+                    "parameter_value": "0.1"
+                }
+            ]
+        }
+    ],
+    "target_data": [
+        {
+            "data_type": "voltage",
+            "file_name": "input_data2.dat",
+            "number_of_traces": 4,
+            "stim_delay": 200.0,
+            "stim_duration": 300.0,
+            "length_ms": 400.0,
+            "sampling_frequency": 10000.0,
+            "stim_amp": [
+                {
+                    "stim_amplitude": 0.1
+                },
+                {
+                    "stim_amplitude": 0.2
+                },
+                {
+                    "stim_amplitude": 0.3
+                },
+                {
+                    "stim_amplitude": 0.4
+                }
+            ]
+        }
+    ],
+    "created_at": "2024-08-15T05:26:57.251957Z"
+}

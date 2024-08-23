@@ -59,6 +59,7 @@ class coreModul():
 		self.model_handler=None
 		self.optimizer=None
 		self.optimal_params=None
+		self.labels_param=[]
 		self.solutions = []
 		self.wfits = []
 		self.wfits2 = []
@@ -86,6 +87,7 @@ class coreModul():
 						"AP width",
 						"Derivative difference"]
 		self.grid_result=None
+		#self.base_dir=self.option_handler.base_dir
 
 	def htmlStrBold(self,inp):
 		return "<b>"+str(inp)+"</b>"
@@ -152,11 +154,13 @@ class coreModul():
 		self.option_handler.SetFileOptions(args.get("file"))
 		self.option_handler.SetInputOptions(args.get("input"))
 
-		self.data_handler.Read([self.option_handler.input_dir],self.option_handler.input_size,self.option_handler.input_scale,self.option_handler.input_length,self.option_handler.input_freq,self.option_handler.type[-1])
+		self.data_handler.Read([self.option_handler.input_dir],self.option_handler.input_size,self.option_handler.input_scale,
+		   self.option_handler.input_length,self.option_handler.input_freq,self.option_handler.type[-1])
 
 
 		if self.option_handler.type[-1]=='features':
 			self.option_handler.input_size= len(self.data_handler.features_data['stim_amp'])
+		#print("done with first step")	
 
 	def LoadModel(self,args):
 		"""
@@ -461,7 +465,179 @@ class coreModul():
 			print((len(self.solutions), "Number of Evaluations"))
 			print(("Optimization lasted for ", stop_time-start_time, " s"))	
 			self.optimal_params=self.optimizer.fit_obj.ReNormalize(self.best_cand)
+	
+	#new function to perform inference:
+	def third_inferstep(self,args):
+		self.grid_result=None
+		print("printing args from thirdinfer")
+		print(args)
+		if args!=None:
+			self.option_handler.SetModelRun(args.get("runparam"))
+			print("working")
+			tmp=args.get("algo_options")
+			if len(tmp.get("boundaries")[0])<1:
+				raise sizeError("No boundaries were given!")
+			#tmp.append(args["starting_points"])
+			#print(tmp)
+			self.option_handler.SetOptimizerOptions(tmp)
+		print(self.option_handler.run_controll_dt)
+		if self.option_handler.type[-1]!='features':
+			if self.option_handler.run_controll_dt<self.data_handler.data.step:
+				print("re-sampling because integration step is smaller then data step")
+				print((self.option_handler.run_controll_dt,self.data_handler.data.step))
+				#we have to resample the input trace so it would match the model output
+				#will use lin interpolation
+				x=numpy.linspace(0,self.option_handler.run_controll_tstop,int(self.option_handler.run_controll_tstop*(1/self.data_handler.data.step)))#x axis of data points
 
+				tmp=[]
+				for i in range(self.data_handler.number_of_traces()):
+					y=self.data_handler.data.GetTrace(i)#y axis, the values from the input traces, corresponding to x
+					
+					#we have the continuous trace, we could re-sample it now
+					new_x=numpy.linspace(0,self.option_handler.run_controll_tstop,int(self.option_handler.run_controll_tstop/self.option_handler.run_controll_dt))
+					#self.trace_reader.SetColumn(i,f(new_x)) the resampled vector replaces the original in the trace reader object
+					tmp.append(numpy.interp(new_x,x,y))
+				self.data_handler.data.t_length=len(tmp[0])
+				self.data_handler.data.freq=self.option_handler.run_controll_tstop/self.option_handler.run_controll_dt
+				self.data_handler.data.step=self.option_handler.run_controll_dt
+				transp=list(map(list,list(zip(*tmp))))
+				self.data_handler.data.data=[]
+				for n in transp:
+					self.data_handler.data.SetTrace(n)
+			#running simulation with smaller resolution is not supported
+			if self.option_handler.run_controll_dt>self.data_handler.data.step:
+				self.option_handler.run_controll_dt=self.data_handler.data.step
+
+		print("success")
+		print(self.option_handler.algorithm_name)
+		exec("self.optimizer="+self.option_handler.algorithm_name+"(self.data_handler,self.option_handler)")
+		if self.option_handler.algorithm_name != "SINGLERUN":
+			with open(self.option_handler.GetFileOption()+"/"+self.option_handler.GetFileOption().split("/")[-1]+"_settings.json", 'w+') as outfile:
+				json.dump(self.option_handler.CreateDictForJson(self.ffun_mapper), outfile,sort_keys=True, indent=4)
+				
+			try:
+				if(self.option_handler.simulator == 'Neuron'):
+					del self.model_handler
+			except:
+				"no model yet"
+			
+			start_time=time.time()
+			self.optimizer.Optimize()
+			stop_time=time.time()
+			self.optimal_params=self.optimizer.candidates
+			print(self.optimal_params)
+			self.cands=self.optimal_params
+			self.labels_param=self.optimizer.label
+			print(self.labels_param)
+	    
+   
+	def fourthinfer(self,args={}):
+	
+		print("1")
+		self.optimizer.fit_obj.objective_fitness(self.optimizer.fit_obj.normalize(self.optimal_params),delete_model=False)
+		self.final_result=[]
+		self.error_comps=[]
+		k_range=self.data_handler.number_of_traces()
+		print("2")	
+		for k in range(k_range):
+			self.error_comps.append(self.optimizer.fit_obj.getErrorComponents(k, self.optimizer.fit_obj.model_trace[k]))
+			with open("result_trace"+str(k)+".txt","w+") as trace_handler:
+				for l in self.optimizer.fit_obj.model_trace[k]:
+					trace_handler.write(str(l))
+					trace_handler.write("\n")
+			self.final_result.append(self.optimizer.fit_obj.model_trace[k])
+
+		if isinstance(self.optimizer.fit_obj.model, externalHandler):
+			self.optimizer.fit_obj.model.record[0]=[]
+        
+		print("3")
+		fig, axes = matplotlib.pyplot.subplots(1, figsize=(7, 6))
+		fig.clf()
+		axes = fig.add_subplot(111)
+		exp_data = []
+		model_data = []
+		if self.option_handler.type[-1] != 'features':
+			for n in range(k_range):
+				exp_data.extend(self.data_handler.data.GetTrace(n))
+				model_data.extend(self.final_result[n])
+		else:
+			for n in range(k_range):
+				model_data.extend(self.final_result[n])
+		if self.option_handler.type[-1]  != 'features':
+			t = int(self.option_handler.input_length)
+		else:
+			t = int(self.option_handler.run_controll_tstop)
+		step = self.option_handler.run_controll_dt
+		axes.set_xticks([n for n in range(0, int((t * k_range) / (step)), int((t * k_range) / (step) / 5.0)) ])
+		axes.set_xticklabels([str(n) for n in range(0, int(t * k_range), int((t * k_range) / 5))])
+
+		print("4")
+		axes.set_xlabel("time [ms]")
+		if self.option_handler.type[-1]!= 'features':
+			_type = self.data_handler.data.type
+		else:
+			_type = "Voltage" if self.option_handler.run_controll_record =="v" else "Current" if self.option_handler.run_controll_record == "c" else ""
+		axes.set_ylabel(_type + " [" + self.option_handler.input_scale + "]")
+		if self.option_handler.type[-1]!= 'features':
+			axes.plot(list(range(0, len(exp_data))), exp_data)
+			axes.plot(list(range(0, len(model_data))), model_data, 'r')
+			axes.legend(["target", "model"])
+		else:
+			axes.plot(list(range(0, len(model_data))), model_data, 'r')
+			axes.legend(["model"])
+		fig.savefig("result_trace.png", dpi=None, facecolor='w', edgecolor='w',
+		orientation='portrait', format=None, bbox_inches=None, pad_inches=0.1)
+		#fig.savefig("result_trace.eps", dpi=None, facecolor='w', edgecolor='w')
+		fig.savefig("result_trace.svg", dpi=None, facecolor='w', edgecolor='w') 
+		print("5")
+		self.name=self.option_handler.model_path.split("/")[-1].split(".")[0]
+		f_handler=open(self.name+"_results.html","w+")
+		tmp_str="<!DOCTYPE html>\n<html>\n<body>\n"
+		tmp_str+=self.htmlStr(str(time.asctime( time.localtime(time.time()) )))+"\n"
+		tmp_str+="<p>"+self.htmlStyle("Optimization of <b>"+self.name+".hoc</b> based on: "+self.option_handler.input_dir,self.htmlAlign("center"))+"</p>\n"
+		tmp_list=[]
+		tmp_fit=self.optimal_params
+		for name,mmin,mmax,f in zip(self.option_handler.GetObjTOOpt(),self.option_handler.boundaries[0],self.option_handler.boundaries[1],tmp_fit):
+			tmp_list.append([str(name),str(mmin),str(mmax),str(f)])
+		param_list=tmp_list
+		tmp_str+="<center><p>"+self.htmlStyle("Results",self.htmlUnderline(),self.htmlResize(200))+"</p></center>\n"
+		tmp_str+=self.htmlTable(["Parameter Name","Minimum","Maximum","Optimum"], tmp_list)+"\n"
+		tmp_str+=self.htmlPciture("result_trace.png")+"\n"
+		tmp_str+=self.htmlPciture(self.option_handler.base_dir+"/figures.png")+"\n"
+		for k in list(self.option_handler.GetOptimizerOptions().keys()):
+			tmp_str+="<p><b>"+k+" =</b> "+str(self.option_handler.GetOptimizerOptions()[k])+"</p>\n"		
+		f_handler.write(tmp_str)
+		f_handler.close()
+		if self.option_handler.algorithm_name != "SINGLERUN":
+			param_dict = [{"name":value[0],"min_boundary":value[1],"max_boundary":value[2],"optimum":value[3]} for value in param_list]
+			error_dict = [{"name":value[0],"value":value[1],"weight":value[2],"weighted_value":value[3]} for value in tmp_list]  
+			algo_name = self.option_handler.algorithm_name.split("_")
+			algorithm_parameters = [{"parameter_name":p_name,"parameter_value":str(p_value)} for p_name, p_value in self.option_handler.algorithm_parameters.items()]
+			alg_dict = {"algorithm_name":algo_name[0],"algorithm_package":algo_name[1], "algorithm_parameters":algorithm_parameters}
+			target_dict = {"data_type":self.option_handler.type[-1],"file_name":self.option_handler.input_dir.split('/')[-1],"number_of_traces":k_range,"stim_delay":self.option_handler.stim_del,
+				"stim_duration":self.option_handler.stim_dur}
+			json_var = {"opt_name":self.name+"_"+self.option_handler.algorithm_name+str(datetime.utcnow().strftime("_%d_%b_%Y_%H:%M:%S:%f"))
+			,"seed": self.option_handler.seed,"models":{"model_name":self.name,"model_author":os.uname()[1]},"parameters":param_dict,"error_function":error_dict, "algorithm":[alg_dict],"target_data":target_dict, "created_at":datetime.strftime(datetime.utcnow(),"%Y-%m-%dT%H:%M:%S.%fZ")}
+			print("6")
+			if self.option_handler.type[-1]=='features':
+				with open(self.option_handler.input_dir, 'r') as outfile:
+					input_features=json.load(outfile)
+					amp_list=[]
+					for x,y in input_features["features"].items():
+						for t,p in y.items():
+							if ('stimAmp') in t:
+								feats=p
+								feats["name"]=x
+								amp_list.append({"stim_amplitude": float(t.replace('stimAmp_','')),"features":[{k.lower(): v for k, v in feats.items()}]})
+					json_var["target_data"].update({"stim_amp":sorted(amp_list,key=lambda d: d["stim_amplitude"])})
+			else:
+				json_var["target_data"].update({"length_ms":self.data_handler.data.t_length,"sampling_frequency":self.data_handler.data.freq})
+				if not isinstance(self.option_handler.stim_amp[0],str):
+					json_var["target_data"].update({"stim_amp":[{"stim_amplitude":stim} for stim in self.option_handler.stim_amp]})
+			json_var["target_data"]=[json_var["target_data"]]
+			with open('metadata.json', 'w+') as outfile:
+				json.dump(json_var, outfile, indent=4)		
+    
 	def FourthStep(self,args={}):
 		"""
 		Renormalizes the output of the ``optimizer`` (see optimizerHandler module for more), and runs

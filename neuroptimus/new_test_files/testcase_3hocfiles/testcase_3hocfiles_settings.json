@@ -1,0 +1,95 @@
+{
+    "attributes": {
+        "D": 0,
+        "adjusted_params": [
+            "cm",
+            "Ra",
+            "g_pas"
+        ],
+        "base_dir": "/home/tamogh/neuroptimus/neuroptimus/new_test_files/testcase_3hocfiles",
+        "boundaries": [
+            [
+                0.0,
+                0.0,
+                1e-05
+            ],
+            [
+                3.0,
+                200.0,
+                0.001
+            ]
+        ],
+        "current_algorithm": {
+            "LIKELIHOOD_FREE": {
+                "D": 10,
+                "lamb": 0.02,
+                "noise": "colour",
+                "prior_mean": [
+                    1.1,
+                    120,
+                    1e-05
+                ],
+                "prior_std": [
+                    3,
+                    50,
+                    0.0001
+                ],
+                "sigma": 0.1,
+                "starting_point": [
+                    1.1,
+                    110,
+                    1.2e-05
+                ]
+            }
+        },
+        "feat_str": [],
+        "feats": [],
+        "input_cont_t": true,
+        "input_dir": "/home/tamogh/neuroptimus/neuroptimus/new_test_files/testcase_3hocfiles/obs_data.dat",
+        "input_freq": 10000.0,
+        "input_length": 1500.0,
+        "input_scale": "mV",
+        "input_size": 1,
+        "lam": 0,
+        "model_path": "/home/tamogh/neuroptimus/neuroptimus/new_test_files/testcase_3hocfiles/load_new_passive_3dscale.hoc",
+        "model_spec_dir": null,
+        "noise_free_input_dir": "",
+        "num_params": 3,
+        "output_level": "0",
+        "param_vals": [
+            0.1,
+            0.1,
+            0.1
+        ],
+        "prior_mean": [],
+        "prior_std": [],
+        "run_controll_dt": 0.1,
+        "run_controll_pos": 0.5,
+        "run_controll_record": "v",
+        "run_controll_sec": "soma",
+        "run_controll_tstop": 1500.0,
+        "run_controll_vrest": -65.0,
+        "seed": 1234,
+        "sig": 0,
+        "sim_command": " ",
+        "simulator": "Neuron",
+        "spike_thres": 0,
+        "spike_window": 50,
+        "start_time_stamp": 1724393915.2253914,
+        "starting_points": null,
+        "stim_amp": [
+            0.03
+        ],
+        "stim_del": 200.0,
+        "stim_dur": 1000.0,
+        "stim_pos": 0.5,
+        "stim_sec": "soma",
+        "stim_type": "IClamp",
+        "type": [
+            "voltage",
+            "voltage"
+        ],
+        "u_fun_string": "#Please define your function below in the template!\n#You may choose an arbitrary name for your function,\n#but the input parameters must be self and a vector!In the first line of the function specify the length of the vector in a comment!\n#In the second line you may specify the names of the parameters in a comment, separated by spaces.\ndef usr_fun(self,v):\n#3\n#cm\n#Ra\n#g_pas\n\tfor sec in h.allsec():\n\t\tsec.cm=v[0]\n\t\tsec.Ra=v[1]\n\t\tfor seg in sec:\n\t\t\tseg.g_pas=v[2]\n\t\t\tseg.e_pas=-65\n",
+        "weights": []
+    }
+}
