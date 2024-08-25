@@ -716,6 +716,28 @@ class Ui_Neuroptimus(QMainWindow):
         #self.inference.setObjectName("inference")
         #self.tabwidget.addTab(self.inference, "inference")
         
+        
+        
+    
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         self.filetab = QtWidgets.QWidget()
         self.filetab.setObjectName("filetab")
         self.filetab_label = QtWidgets.QLabel(self.filetab)
@@ -1717,9 +1739,9 @@ class Ui_Neuroptimus(QMainWindow):
         self.optimization_layout_run.setObjectName("optimization_layout_run")
 
         # Setup Optimization buttons and widgets
-        self.pushButton_30 = QtWidgets.QPushButton("Button 30", self.optimization_container_run)
+        self.pushButton_300 = QtWidgets.QPushButton("Button 300", self.optimization_container_run)
         self.pushButton_33 = QtWidgets.QPushButton("Button 33", self.optimization_container_run)
-        self.pushButton_32 = QtWidgets.QPushButton("Button 32", self.optimization_container_run)
+        self.pushButton_320 = QtWidgets.QPushButton("Button 320", self.optimization_container_run)
         self.label_59 = QtWidgets.QLabel("Label 59", self.optimization_container_run)
 
         self.pushButton_Inspyred = QtWidgets.QPushButton("Inspyred", self.optimization_container_run)
@@ -1733,9 +1755,9 @@ class Ui_Neuroptimus(QMainWindow):
         self.label_60 = QtWidgets.QLabel("Label 60", self.optimization_container_run)
 
         # Add widgets to Optimization layout
-        self.optimization_layout_run.addWidget(self.pushButton_30, 0, 0)
+        self.optimization_layout_run.addWidget(self.pushButton_300, 0, 0)
         self.optimization_layout_run.addWidget(self.pushButton_33, 0, 1)
-        self.optimization_layout_run.addWidget(self.pushButton_32, 0, 2)
+        self.optimization_layout_run.addWidget(self.pushButton_320, 0, 2)
         self.optimization_layout_run.addWidget(self.label_59, 1, 0, 1, 3)
 
         button_layout = QtWidgets.QHBoxLayout()
@@ -1920,6 +1942,7 @@ class Ui_Neuroptimus(QMainWindow):
         
         
         
+        
 
 
 
@@ -1972,7 +1995,7 @@ class Ui_Neuroptimus(QMainWindow):
         self.radio_inference.toggled.connect(lambda: self.change_mode('inference'))
 
         
-        self.retranslateUi(Neuroptimus)
+        #self.retranslateUi(Neuroptimus)
         QtCore.QMetaObject.connectSlotsByName(Neuroptimus)
         self.tabwidget.setCurrentIndex(0)
         self.change_mode('inference')
@@ -1980,6 +2003,15 @@ class Ui_Neuroptimus(QMainWindow):
 
     def change_mode(self, mode):
         self.mode = mode
+        print(f"Changing mode to: {mode}")
+        
+        if not hasattr(self, 'retranslate_called'):
+            self.retranslate_called = False
+
+        if not self.retranslate_called:
+            self.retranslateUi(self.Neuroptimus)
+            self.retranslate_called = True
+            print("UI retranslated")
         if mode == 'optimization':
             self.stackedWidget.setCurrentWidget(self.optimization_container)
             self.stackedWidget_run.setCurrentWidget(self.optimization_container_run)
@@ -1992,7 +2024,10 @@ class Ui_Neuroptimus(QMainWindow):
             self.stackedWidget_stat.setCurrentWidget(self.inference_container_stat)
             #self.stackedWidget_file.setCurrentWidget(self.inference_container_file)
             #self.filetab_label.setText("Currently Performing Inference")
-        self.retranslateUi(self.Neuroptimus)
+        if mode != self.mode:
+            self.retranslate_called = False
+        #self.retranslateUi(self.Neuroptimus)
+        print("UI retranslated")
 
     def set_parameters(self):
         self.param_values = {}
@@ -2043,6 +2078,18 @@ class Ui_Neuroptimus(QMainWindow):
         #modeltab 2 disappearing
         self.actionunlock.triggered.connect(self.unlocktabs)
         self.actionexit.triggered.connect(QApplication.quit)
+        
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         
         if self.mode=='inference':
             self.tabwidget.setTabText(self.tabwidget.indexOf(self.filetab), _translate("Neuroptimus", "Target data"))
@@ -2212,13 +2259,18 @@ class Ui_Neuroptimus(QMainWindow):
         
             self.pushButton_30.setText(_translate("Neuroptimus", "Run"))
             self.pushButton_30.clicked.connect(self.startFittingThread)
+            self.pushButton_300.setText(_translate("Neuroptimus", "Run"))
+            self.pushButton_300.clicked.connect(self.startFittingThread)
+            self.pushButton_320.setText(_translate("Neuroptimus", "Boundaries"))
+            self.pushButton_320.clicked.connect(self.boundarywindow)
+            
         
             # self.pushButton_31.setText(_translate("Neuroptimus", "Starting points"))
             # self.pushButton_31.clicked.connect(self.startingpoints)
             # self.pushButton_31.setEnabled(False)
             self.pushButton_33.setText(_translate("Neuroptimus", "Evaluate"))
             self.pushButton_33.clicked.connect(self.evaluatewindow)
-            self.pushButton_33.setToolTip("Evaluate user defined parameter set")
+            self.pushButton_33.setToolTip("Evaluate user-- defined parameter set")
             self.pushButton_32.setText(_translate("Neuroptimus", "Boundaries"))
             self.pushButton_32.clicked.connect(self.boundarywindow)
             self.label_59.setText(_translate("Neuroptimus", "Algorithms"))
@@ -2279,8 +2331,8 @@ class Ui_Neuroptimus(QMainWindow):
                     "Particle Swarm (PSO) - Pygmo","Exponential Natural ES (XNES) - Pygmo",
                     "Simple Genetic Algorithm (SGA) - Pygmo","Covariance Matrix Adaptation ES (CMAES) - Pygmo",
                     "Differential Evolution (DE1220) - Pygmo", "Bee Colony (ABC) - Pygmo","Praxis - Pygmo","Nelder-Mead (NM) - Pygmo"] #"FullGrid - Pygmo","Single Differential Evolution  (SDE) - Pygmo"
-            self.likelihood=["BAYESIAN_INFERENCE","VARIATIONAL_INFERENCE","CUSTOM_VARIATIONAL_INFERENCE"]
-            self.likelihood_free=["LIKELIHOOD_FREE"]
+            self.likelihood=["MCMC_EMCEE","VARIATIONAL_INFERENCE_PYVBMC","CUSTOM_VARIATIONAL_INFERENCE"]
+            self.likelihood_free=["LIKELIHOOD_FREE_ABC"]
             self.inference_algorithms={'likelihood':self.likelihood,'likelihood_free':self.likelihood_free}
             self.algos={
                 'Recommended':self.Recom,
@@ -2359,10 +2411,10 @@ class Ui_Neuroptimus(QMainWindow):
     
     
             self.algo_dict=self.core.option_handler.algorithm_parameters_dict.copy()
-            print(self.algo_dict)
+            #print(self.algo_dict)
             
-            print("the parameter values are")
-            print(self.param_values)
+            #print("the parameter values are")
+            #print(self.param_values)
             #print(self.algo_dict)
     
             self.tabwidget.setTabText(self.tabwidget.indexOf(self.results_tab), _translate("Neuroptimus", "Results"))
@@ -2399,7 +2451,7 @@ class Ui_Neuroptimus(QMainWindow):
             self.tabwidget.setTabEnabled(5,False)
             self.tabwidget.setTabEnabled(6,False)
             self.result_labels = []
-            print("working till result_label")
+            #print("working till result_label")
             for curr_tab in [self.results_tab]:
                 label = QtWidgets.QLabel()
                 font = QtGui.QFont()
@@ -2435,6 +2487,7 @@ class Ui_Neuroptimus(QMainWindow):
                 self.plot_widget_stat.setPixmap(pixmap)
                 self.plot_widget_stat.setScaledContents(True)'''
         else:
+
             self.tabwidget.setTabText(self.tabwidget.indexOf(self.filetab), _translate("Neuroptimus", "Target data"))
             self.label_23.setText(_translate("Neuroptimus", "Load mod files from:"))
             self.label_24.setText(_translate("Neuroptimus", "Model file"))
@@ -2450,6 +2503,7 @@ class Ui_Neuroptimus(QMainWindow):
             self.pushButton_14.clicked.connect(self.openFolderNameDialog2)
             self.pushButton_15.setText(_translate("Neuroptimus", "Browse..."))
             self.pushButton_15.clicked.connect(self.openFileNameDialog2)
+            
             self.pushButton_16.setText(_translate("Neuroptimus", "Define function"))
             self.pushButton_16.clicked.connect(self.UF)
             self.label_26.setText(_translate("Neuroptimus", "Command"))
@@ -2600,28 +2654,20 @@ class Ui_Neuroptimus(QMainWindow):
             
             
             
-            self.pushButton_30.setText(_translate("Neuroptimus", "Run"))
-            self.pushButton_30.clicked.connect(self.startFittingThread)
-        
+            self.tabwidget.setTabText(self.tabwidget.indexOf(self.fittab), _translate("Neuroptimus", "Fitness"))
+            self.pushButton_300.setText(_translate("Neuroptimus", "Run"))
+            self.pushButton_300.clicked.connect(self.startFittingThread)
             # self.pushButton_31.setText(_translate("Neuroptimus", "Starting points"))
             # self.pushButton_31.clicked.connect(self.startingpoints)
             # self.pushButton_31.setEnabled(False)
             self.pushButton_33.setText(_translate("Neuroptimus", "Evaluate"))
             self.pushButton_33.clicked.connect(self.evaluatewindow)
             self.pushButton_33.setToolTip("Evaluate user defined parameter set")
-            self.pushButton_32.setText(_translate("Neuroptimus", "Boundaries"))
-            self.pushButton_32.clicked.connect(self.boundarywindow)
+            self.pushButton_320.setText(_translate("Neuroptimus", "Boundaries"))
+            self.pushButton_320.clicked.connect(self.boundarywindow)
             self.label_59.setText(_translate("Neuroptimus", "Algorithms"))
             self.label_60.setText(_translate("Neuroptimus", "Parameters"))
             self.tabwidget.setTabText(self.tabwidget.indexOf(self.runtab), _translate("Neuroptimus", "Run"))
-        
-        
-            self.pushButton_likelihood.setText(_translate("Neuroptimus", "Likelihood"))
-            self.pushButton_likelihood.setGeometry(QtCore.QRect(30, 95, 100, 30))
-            self.pushButton_likelihood.clicked.connect(partial(self.packageselect,"likelihood"))
-            self.pushButton_likelihood_free.setText(_translate("Neuroptimus", "Likelihood free"))
-            self.pushButton_likelihood_free.setGeometry(QtCore.QRect(130, 95, 120, 30))
-            self.pushButton_likelihood_free.clicked.connect(partial(self.packageselect,"likelihood_free"))
             
             self.pushButton_Recom.setText(_translate("Neuroptimus", "Recommended"))
             self.pushButton_Recom.clicked.connect(partial(self.packageselect,"Recommended"))
@@ -2633,16 +2679,6 @@ class Ui_Neuroptimus(QMainWindow):
             self.pushButton_Bluepyopt.clicked.connect(partial(self.packageselect,"Bluepyopt"))
             self.pushButton_Scipy.setText(_translate("Neuroptimus", "Scipy"))
             self.pushButton_Scipy.clicked.connect(partial(self.packageselect,"Scipy"))
-            self.inference_algos.setColumnCount(1)
-            self.inference_algos.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
-            self.inference_algos.clicked.connect(self.algoselect)
-            self.inference_algos.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
-            self.inference_algos.setColumnWidth(0,440)
-            self.inference_algos.setHorizontalHeaderLabels(['Algorithms'])
-            self.inference_parameter_list.setColumnCount(2)
-            self.inference_parameter_list.horizontalHeader().setStretchLastSection(True)
-            self.inference_parameter_list.setHorizontalHeaderLabels(["Option","Value"])
-            self.inference_parameter_list.cellChanged.connect(self.aspect_changed)
             self.algolist.setColumnCount(1)
             self.algolist.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
             self.algolist.clicked.connect(self.algoselect)
@@ -2656,11 +2692,11 @@ class Ui_Neuroptimus(QMainWindow):
             self.seed = []
             self.resolution=0
             self.Recom=["Classical Evolution Strategy (CES) - Inspyred","Covariance Matrix Adaptation ES (CMAES) - Cmaes", "Covariance Matrix Adaptation ES (CMAES) - Pygmo",
-                "Particle Swarm (PSO) - Inspyred","Particle Swarm Gen (PSOG) - Pygmo","Indicator Based (IBEA) - Bluepyopt","L-BFGS-B - Scipy","Random Search"]
+                    "Particle Swarm (PSO) - Inspyred","Particle Swarm Gen (PSOG) - Pygmo","Indicator Based (IBEA) - Bluepyopt","L-BFGS-B - Scipy","Random Search"]
             self.Inspyred=["Classical Evolution Strategy (CES) - Inspyred","Particle Swarm (PSO) - Inspyred",
-                "Differential Evolution (DE) - Inspyred",
-                "Nondominated Sorted GA (NSGA2) - Inspyred","Pareto Archived ES (PAES) - Inspyred",
-                "Simulated Annealing (SA) - Inspyred"]
+                    "Differential Evolution (DE) - Inspyred",
+                    "Nondominated Sorted GA (NSGA2) - Inspyred","Pareto Archived ES (PAES) - Inspyred",
+                    "Simulated Annealing (SA) - Inspyred"]
             self.Scipy=["Basinhopping (BH) - Scipy","Nelder-Mead (NM) - Scipy","L-BFGS-B - Scipy"]
             self.Bluepyopt=["Nondominated Sorted GA (NSGA2) - Bluepyopt","Indicator Based (IBEA) - Bluepyopt"]
             self.Pygmo=["Particle Swarm Gen (PSOG) - Pygmo","Nondominated Sorted Particle Swarm (NSPSO) - Pygmo",
@@ -2668,21 +2704,16 @@ class Ui_Neuroptimus(QMainWindow):
                     "Extended Ant Colony (GACO) - Pygmo","Multi-Objective Ant Colony (MACO) - Pygmo","Self-Adaptive DE (SADE) - Pygmo",
                     "Particle Swarm (PSO) - Pygmo","Exponential Natural ES (XNES) - Pygmo",
                     "Simple Genetic Algorithm (SGA) - Pygmo","Covariance Matrix Adaptation ES (CMAES) - Pygmo",
-                    "Differential Evolution (DE1220) - Pygmo", "Bee Colony (ABC) - Pygmo","Praxis - Pygmo","Nelder-Mead (NM) - Pygmo"] #"FullGrid - Pygmo","Single Differential Evolution  (SDE) - Pygmo"
-            self.likelihood=["BAYSESIAN_INFERENCE","VARIATIONAL_INFERENCE","CUSTOM_VARIATIONAL_INFERENCE"]
-            self.likelihood_free=["LIKELIHOOD_FREE"]
-            self.inference_algorithms={'likelihood':self.likelihood,'likelihood_free':self.likelihood_free}
+                    "Differential Evolution (DE1220) - Pygmo", "Bee Colony (ABC) - Pygmo","Praxis - Pygmo","Nelder-Mead (NM) - Pygmo"] #"FullGrid - Pygmo","Single Differential Evolutio   n (SDE) - Pygmo"
             self.algos={
                 'Recommended':self.Recom,
                 'Inspyred': self.Inspyred,
                 'Scipy': self.Scipy,
                 'Bluepyopt': self.Bluepyopt,
                 'Pygmo': self.Pygmo}
-                
-            #self.inference_algos.setRowCount(len(self.likelihood))
             self.algolist.setRowCount(len(self.Recom))
             for index,item in enumerate(self.Recom): 
-                self.algolist.setItem(index, 0, QTableWidgetItem(item))  
+                self.algolist.setItem(index, 0, QTableWidgetItem(item)) 
             
             self.algo_param_dict = {"ker" : "Kernel: number of solutions stored in the solution archive.",
                                     "q" : "Convergence speed parameter: this parameter is useful for managing \nthe convergence speed towards the found minima (the smaller the     faster).",
@@ -2751,9 +2782,9 @@ class Ui_Neuroptimus(QMainWindow):
             
             
             #print(self.algo_dict)
-            print("printing here")
-            print(self.param_values)
-            print(self.new_params)
+            #print("printing here")
+            #print(self.param_values)
+            #print(self.new_params)
     
             self.tabwidget.setTabText(self.tabwidget.indexOf(self.results_tab), _translate("Neuroptimus", "Results"))
             self.label_72.setText(_translate("Neuroptimus", "Final Result"))
@@ -2789,7 +2820,7 @@ class Ui_Neuroptimus(QMainWindow):
             self.tabwidget.setTabEnabled(5,False)
             self.tabwidget.setTabEnabled(6,False)
             self.result_labels = []
-            print("working till result_label")
+            #print("working till result_label")
             for curr_tab in [self.results_tab]:
                 label = QtWidgets.QLabel()
                 font = QtGui.QFont()
@@ -2901,6 +2932,7 @@ class Ui_Neuroptimus(QMainWindow):
         """
         File dialog for the file tab to open file.
         """
+        #print(f"openFileNameDialog called in mode: {self.mode}")
         options = QtWidgets.QFileDialog.Options()
         options |= QtWidgets.QFileDialog.DontUseNativeDialog
         self.datfileName, _ = QFileDialog.getOpenFileName(None,"QFileDialog.getOpenFileName()", "","Data files (*.dat *.json);;All Files (*);;", options=options)
@@ -2908,6 +2940,7 @@ class Ui_Neuroptimus(QMainWindow):
             self.lineEdit_file.setText(self.datfileName)
             self.lineEdit_folder.setText(os.path.dirname(os.path.realpath(self.datfileName)))
             self.pushButton_3.setEnabled(True)
+            #print(f"Data file selected: {self.datfileName}")
             if self.time_checker.isChecked():
                 self.time_calc()
 
@@ -2927,22 +2960,23 @@ class Ui_Neuroptimus(QMainWindow):
         """
         File dialog for the model tab to open folder.
         """ 
-        if self.mode=="inference":
-            options = QtWidgets.QFileDialog.Options()
-            options |= QtWidgets.QFileDialog.DontUseNativeDialog
-            folderName= QFileDialog.getExistingDirectory(None, options=options)
-            if folderName:
-                self.lineEdit_folder2.setText(folderName)
+        #print(f"openFolderNameDialog2 called in mode: {self.mode}")
+        options = QtWidgets.QFileDialog.Options()
+        options |= QtWidgets.QFileDialog.DontUseNativeDialog
+        folderName= QFileDialog.getExistingDirectory(None, options=options)
+        if folderName:
+            self.lineEdit_folder2.setText(folderName)
+            print(f"Folder selected: {folderName}")
         else:
-            options = QtWidgets.QFileDialog.Options()
-            options |= QtWidgets.QFileDialog.DontUseNativeDialog
-            folderName= QFileDialog.getExistingDirectory(None, options=options)
-            if folderName:
-                self.lineEdit_folder2.setText(folderName)
+            print("no folder selected")
+            
+                
+                
     def openFileNameDialog2(self):  
         """
         File dialog for the model tab to open file.
         """  
+        #print(f"openFileNameDialog2 called in mode: {self.mode}")
         options = QtWidgets.QFileDialog.Options()
         options |= QtWidgets.QFileDialog.DontUseNativeDialog
         fileName, _ = QFileDialog.getOpenFileName(None,"QFileDialog.getOpenFileName()", "","Hoc Files (*.hoc);;All Files (*);;", options=options)
@@ -2950,6 +2984,9 @@ class Ui_Neuroptimus(QMainWindow):
             self.lineEdit_file2.setText(fileName)
             self.lineEdit_folder2.setText(os.path.dirname(os.path.realpath(fileName)))
             self.pushButton_3.setEnabled(True)
+            print(f"File selected: {fileName}")
+        else:
+            print("no file selected")
 
     def openFolderNameDialog(self):
         """
@@ -2965,12 +3002,16 @@ class Ui_Neuroptimus(QMainWindow):
         """
         Disables mod files path if checked for usage
         """
+        #print(f"Disable mod path called. Checkbox is {'checked' if self.load_mods_checkbox.isChecked() else 'unchecked'}")
         if self.load_mods_checkbox.isChecked():
             self.lineEdit_folder2.setEnabled(True)
             self.pushButton_14.setEnabled(True)
         else:
             self.lineEdit_folder2.setEnabled(False)
             self.pushButton_14.setEnabled(False)
+        
+        #print(f"lineEdit_folder2 is now {'enabled' if self.lineEdit_folder2.isEnabled() else 'disabled'}")
+        #print(f"pushButton_14 is now {'enabled' if self.pushButton_14.isEnabled() else 'disabled'}")    
 
 
     def unitchange(self):
@@ -3047,7 +3088,7 @@ class Ui_Neuroptimus(QMainWindow):
                 
             except ValueError as ve:
                 print(ve)
-        print(kwargs)        
+        #print(kwargs)        
         self.core.FirstStep(kwargs)
         self.tabwidget.setTabEnabled(1,True)
         if self.type_selector.currentIndex()==0 or self.type_selector.currentIndex()==1 or self.type_selector.currentIndex()==3:
@@ -3777,7 +3818,7 @@ class Ui_Neuroptimus(QMainWindow):
         
         
         
-        '''#this is run for the inference:
+        
         err=[]
         errpop=[]
         if not self.dd_type.currentIndex():
@@ -3893,24 +3934,25 @@ class Ui_Neuroptimus(QMainWindow):
                     if not singlerun:
                         self.stat_tab_fun()
                 except:
-                    popup("Evaluation step error")'''
+                    popup("Evaluation step error")
 
 
 
     def results_tab_plot(self):
         text = "Results:"
-        '''if self.core.cands:
-            for n, k in zip(self.core.option_handler.GetObjTOOpt(), self.core.optimal_params):
-                if n.split()[0]==n.split()[-1]:
-                    param=[n.split()[0], n.split()[-1]]
-                    text += "\n" + param[0] + "\n" + "\t" + str(k)
-                else:
-                    param=[n.split()[0], "segment: " + n.split()[1], n.split()[-1]]
-                    if n.split()[1]!=n.split()[-1]:
-                        text += "\n" + ": \n".join(param) + ":" + "\n" + "\t" + str(k)
+        if self.mode=="optimization":
+            if self.core.cands:
+                for n, k in zip(self.core.option_handler.GetObjTOOpt(), self.core.optimal_params):
+                    if n.split()[0]==n.split()[-1]:
+                        param=[n.split()[0], n.split()[-1]]
+                        text += "\n" + param[0] + "\n" + "\t" + str(k)
                     else:
-                        text += "\n" + param[0] + ": " + param[-1] + "\n" + "\t" + str(k)
-        text += "\n" + "Fitness:\n" + "\t" + str(self.core.best_fit)'''
+                        param=[n.split()[0], "segment: " + n.split()[1], n.split()[-1]]
+                        if n.split()[1]!=n.split()[-1]:
+                            text += "\n" + ": \n".join(param) + ":" + "\n" + "\t" + str(k)
+                        else:
+                            text += "\n" + param[0] + ": " + param[-1] + "\n" + "\t" + str(k)
+            text += "\n" + "Fitness:\n" + "\t" + str(self.core.best_fit)
         a=self.core.labels_param
         b=self.core.optimal_params
         print(a,b)

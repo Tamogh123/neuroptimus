@@ -10,41 +10,21 @@ from pyvbmc import VBMC
 from matplotlib import ticker
 import corner
 from math import cos, sin, pi
-import numpy as np
-import matplotlib.pyplot as plt
 from scipy.stats import multivariate_normal
 from abcpy.probabilisticmodels import ProbabilisticModel, Continuous, InputConnector
 from abcpy.continuousmodels import Uniform
-from abcpy.statistics import Identity
 from abcpy.distances import Euclidean
 from abcpy.inferences import RejectionABC
 from abcpy.backends import BackendDummy as Backend
 from scipy.integrate import solve_ivp
-import jax.numpy as jnp
-import blackjax
-import numpy as np
-import scipy.stats as scs
-import matplotlib.pyplot as plt
-import seaborn as sns
-import os
-import corner
-from math import sqrt, log, cos, pi, exp
 from scipy.integrate import solve_ivp
-import jax
-import jax.numpy as jnp
-import blackjax
-import jax.numpy as jnp
-from jax.scipy.stats import norm
 from scipy.stats import gaussian_kde
-
-from abcpy.backends import BackendDummy as Backend
 from abcpy.continuousmodels import Uniform, Normal
 from abcpy.statistics import Identity
 from abcpy.statisticslearning import Semiautomatic, SemiautomaticNN
 from abcpy.distances import Euclidean
 from abcpy.perturbationkernel import DefaultKernel
 from abcpy.inferences import PMCABC
-import numpy as np
 import logging
 from scipy.stats import gaussian_kde
 
@@ -80,7 +60,7 @@ class SimulationModel(ProbabilisticModel, Continuous):
         result = [simulation_result for _ in range(k)]
         if len(result)>2001:
             result=np.array(result)[::int(len(result)/1000)]
-        print(len(result))  
+        #print(len(result))  
         result=np.array(result)
         result=result.flatten().tolist()
         return result
@@ -109,8 +89,8 @@ class Bayesian_inference:
         self.map=[]
         self.observed=self.input_trace
         self.algorithm=algorithm
-        if "LIKELIHOOD_FREE" in self.algorithm :
-            print("yes")
+        if "LIKELIHOOD_FREE_ABC" in self.algorithm :
+            #print("yes")
             self.model=self.create_model()   
     def resample(self, input_trace):
         if len(input_trace) > 2001:
@@ -343,87 +323,10 @@ class Bayesian_inference:
         file_path = os.path.join(base_dir, 'figures.png')
         plt.savefig(file_path)         
         #plt.show()
-    def run_hmc(self, n_samples, step_size, num_steps):
-        def potential_fn(params):
-            return -self.log_probability(params)
-
-        def grad_potential_fn(params):
-            return jax.grad(potential_fn)(params)
-
-        rng_key = jax.random.PRNGKey(0)
-        lower_bound_jax = jnp.array(self.lower_bound)
-        upper_bound_jax = jnp.array(self.upper_bound)
-        init_params = jax.random.uniform(rng_key, shape=(len(lower_bound_jax),), minval=lower_bound_jax, maxval=upper_bound_jax)
-        hmc = blackjax.hmc(potential_fn, grad_potential_fn, step_size, num_steps)
-        hmc_state = hmc.init(init_params)
-
-        @jax.jit
-        def one_step(state, rng_key):
-            state, info = hmc.step(state, rng_key)
-            return state, state.position
-
-        samples = []
-        for _ in range(n_samples):
-            rng_key, subkey = jax.random.split(rng_key)
-            hmc_state, sample = one_step(hmc_state, subkey)
-            samples.append(sample)
-
-        return jnp.array(samples)     
+  
         
         
-    def hamiltonian(self, q, p):
-        return -self.log_probability(q) + 0.5 * np.sum(p**2)
-
-    def hamilton_equations(self, t, y):
-        q, p = y[:len(self.lower_bound)], y[len(self.lower_bound):]
-        dqdt = p
-        dpdt = -self.grad_log_probability(q)
-        return np.concatenate([dqdt, dpdt])
-
-    def grad_log_probability(self, q):
-        # Compute gradient numerically
-        eps = 1e-8
-        grad = np.zeros_like(q)
-        for i in range(len(q)):
-            q_plus = q.copy()
-            q_plus[i] += eps
-            q_minus = q.copy()
-            q_minus[i] -= eps
-            print("self.log_probability(q_plus):",self.log_probability(q_plus))
-            grad[i] = (self.log_probability(q_plus) - self.log_probability(q_minus)) / (2 * eps)
-            #print(f"Gradient component {i}: {grad[i]}")
-        return grad
-
-    def leapfrog_step(self, q, p, epsilon):
-        p -= 0.5 * epsilon * self.grad_log_probability(q)
-        q += epsilon * p
-        p -= 0.5 * epsilon * self.grad_log_probability(q)
-        return q, p
-
-    def run_hmc1(self, n_samples, epsilon, L):
-        q = np.random.uniform(self.lower_bound, self.upper_bound)
-        samples = []
-        
-        for _ in range(n_samples):
-            q0 = q
-            p0 = np.random.normal(0, 1, len(q))
-            
-            q, p = q0, p0
-            for _ in range(L):
-                q, p = self.leapfrog_step(q, p, epsilon)
-            
-            p = -p
-            
-            current_H = self.hamiltonian(q0, p0)
-            proposed_H = self.hamiltonian(q, p)
-            
-            if np.random.random() < np.exp(current_H - proposed_H):
-                samples.append(q)
-            else:
-                samples.append(q0)
-                q = q0
-        
-        return np.array(samples)        
+    
         
         
     def create_model(self):
@@ -440,7 +343,7 @@ class Bayesian_inference:
         
         
         
-    def find_mode_kde(self, values):
+    def find_mode_kde_new(self, values):
         # Transpose values to ensure each column is a variable (dimension)
         values = np.transpose(values)
         kde = gaussian_kde(values)
@@ -450,7 +353,7 @@ class Bayesian_inference:
         return modes[0]  # Return the first occurrence if multiple modes are found
 
 
-    def run_inference(self, n_samples=2,step_size=0.01, num_steps=10,n_samples_per_param=1, epsilon=10000000,L=10):
+    def run_inference(self, n_samples=4,step_size=0.01, num_steps=10,n_samples_per_param=1, epsilon=10000000,L=10):
         if "NEW_HMC" in self.algorithm:
             samples = self.run_hmc(n_samples, step_size, num_steps)
             print(samples)
@@ -484,7 +387,7 @@ class Bayesian_inference:
              self.journal=journal
              parameters = journal.get_accepted_parameters()
              params_array = np.array(parameters)
-             self.map = [self.find_mode_kde(params_array[:, i]) for i in range(params_array.shape[1])]
+             self.map = [self.find_mode_kde_new(params_array[:, i]) for i in range(params_array.shape[1])]
              print(self.map)
              return journal
              

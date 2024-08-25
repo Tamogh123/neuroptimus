@@ -1,5 +1,5 @@
 {
-    "opt_name": "load_new_passive_3dscale_BAYESIAN_INFERENCE_23_Aug_2024_06:17:19:249221",
+    "opt_name": "load_new_passive_3dscale_MCMC_EMCEE_24_Aug_2024_18:15:52:076588",
     "seed": 1234,
     "models": {
         "model_name": "load_new_passive_3dscale",
@@ -10,13 +10,13 @@
             "name": "cm",
             "min_boundary": "0.0",
             "max_boundary": "3.0",
-            "optimum": "0.26332772911188734"
+            "optimum": "0.3487911813762282"
         },
         {
             "name": "Ra",
             "min_boundary": "0.0",
             "max_boundary": "200.0",
-            "optimum": "199.95331549540492"
+            "optimum": "0.4421704755761119"
         }
     ],
     "error_function": [
@@ -24,27 +24,27 @@
             "name": "cm",
             "value": "0.0",
             "weight": "3.0",
-            "weighted_value": "0.26332772911188734"
+            "weighted_value": "0.3487911813762282"
         },
         {
             "name": "Ra",
             "value": "0.0",
             "weight": "200.0",
-            "weighted_value": "199.95331549540492"
+            "weighted_value": "0.4421704755761119"
         }
     ],
     "algorithm": [
         {
-            "algorithm_name": "BAYESIAN",
-            "algorithm_package": "INFERENCE",
+            "algorithm_name": "MCMC",
+            "algorithm_package": "EMCEE",
             "algorithm_parameters": [
                 {
                     "parameter_name": "prior_mean",
-                    "parameter_value": "[1.2, 110]"
+                    "parameter_value": "[2.5, 120]"
                 },
                 {
                     "parameter_name": "prior_std",
-                    "parameter_value": "[3, 80]"
+                    "parameter_value": "[2, 50]"
                 },
                 {
                     "parameter_name": "ndim",
@@ -56,7 +56,7 @@
                 },
                 {
                     "parameter_name": "starting_point",
-                    "parameter_value": "[1.2, 115]"
+                    "parameter_value": "[1.2, 105]"
                 },
                 {
                     "parameter_name": "noise",
@@ -72,7 +72,7 @@
                 },
                 {
                     "parameter_name": "sigma",
-                    "parameter_value": "0.1"
+                    "parameter_value": "0"
                 }
             ]
         }
@@ -88,10 +88,10 @@
             "sampling_frequency": 10000.0,
             "stim_amp": [
                 {
-                    "stim_amplitude": 0.003
+                    "stim_amplitude": 0.03
                 }
             ]
         }
     ],
-    "created_at": "2024-08-23T06:17:19.249244Z"
+    "created_at": "2024-08-24T18:15:52.076612Z"
 }

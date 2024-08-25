@@ -7,7 +7,7 @@
         "tau_prime": null,
         "epsilon": 1e-05
     },
-    "BAYESIAN_INFERENCE": {
+    "MCMC_EMCEE": {
         "D": 3,
         "lamb": 0.01,
         "noise":"colour",
@@ -21,7 +21,7 @@
         
     },
     
-    "VARIATIONAL_INFERENCE" :{
+    "VARIATIONAL_INFERENCE_PYVBMC" :{
         "D": 3,
         "lamb": 0.01,
         "noise":"colour",
@@ -59,7 +59,7 @@
         "starting_points" :[0.02, 0.04, 0.0002]        
     
     },    
-    "LIKELIHOOD_FREE":{
+    "LIKELIHOOD_FREE_ABC":{
         "D": 3,
         "lamb": 0.001,
         "noise":"colour",

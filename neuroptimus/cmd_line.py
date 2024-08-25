@@ -43,10 +43,10 @@ def main(fname, param=None):
     kwargs = {"stim" : core.option_handler.GetModelStim(), "stimparam" : core.option_handler.GetModelStimParam()}
     core.SecondStep(kwargs)
     kwargs = None
-    if "BAYESIAN_INFERENCE" or "VARIATIONAL_INFERENCE" or "CUSTOM_VARIATIONAL_INFERENCE" in core.option_handler.current_algorithm.keys():
+    if "MCMC_EMCEE" or "VARIATIONAL_INFERENCE_PYVBMC" or "CUSTOM_VARIATIONAL_INFERENCE" in core.option_handler.current_algorithm.keys():
              core.third_inferstep(kwargs)
              core.fourthinfer()
-    elif "LIKELIHOOD_FREE" or "HMC" or "NEW_HMC"  in core.option_handler.current_algorithm.keys():
+    elif "LIKELIHOOD_FREE_ABC" or "HMC" or "NEW_HMC"  in core.option_handler.current_algorithm.keys():
              core.third_inferstep(kwargs)
              core.fourthinfer()
     else:     

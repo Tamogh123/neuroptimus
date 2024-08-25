@@ -995,6 +995,9 @@ class fF(object):
             args["add_data"] = add_data
             param = self.option.GetModelStimParam()
             parameter = param
+            #print(parameter)
+            #print("value of k",k)
+            #print(param[0])
             parameter[0] = param[0][k]
             if isinstance(parameter[0], str):
                 self.model.SetCustStimuli(parameter)
@@ -1013,13 +1016,13 @@ class fF(object):
                                 raise sizeError("model: " + str(len(self.model.record[0])) + ", target: " + str(len(self.reader.data.GetTrace(k))))
                             temp_fit.append((f(self.model.record[0],
                                                               self.reader.data.GetTrace(k), args)))
-                            print(self.model.record[0])                                  
+                            #print(self.model.record[0])                                  
 
                     else:
                         for f, w in zip(features, weigths):
                             temp_fit.append(self.FFun_for_Features(self.model.record[0],
                                                                 self.reader.features_data, f, k, args))
-                            print(self.model.record[0])                                    
+                            #print(self.model.record[0])                                    
                 else:
                         temp_fit.append(100)
                         #print(self.model.record[0])
@@ -1050,7 +1053,7 @@ class fF(object):
                 new_array.append(a)
                         
         #print(self.option.current_algorithm)
-        if "LIKELIHOOD_FREE"  in self.option.current_algorithm:
+        if "LIKELIHOOD_FREE_ABC"  in self.option.current_algorithm:
             if self.option.input_size ==1:
                 x=np.array(new_array)
                 reshaped_array = x
@@ -1060,7 +1063,7 @@ class fF(object):
                 reshaped_array=x.reshape(4001,int(self.option.input_size))
                 return reshaped_array
 
-        if "BAYESIAN_INFERENCE" or "VARIATIONAL_INFERENCE" or"HMC" or"NEW_HMC" or "CUSTOM_VARIATIONAL_INFERENCE" in self.option.current_algorithm :
+        if "MCMC_EMCEE" or "VARIATIONAL_INFERENCE_PYVBMC" or"HMC" or"NEW_HMC" or "CUSTOM_VARIATIONAL_INFERENCE" in self.option.current_algorithm :
             if self.option.input_size == 1:
                 return np.array(self.reader.data.GetTrace(k))-np.array(self.model.record[0])  
             else:

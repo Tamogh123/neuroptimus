@@ -1,20 +1,5 @@
-2024-08-03 20:50:27,367 - inspyred.ec - DEBUG - generating initial population
-2024-08-03 20:50:27,368 - inspyred.ec - DEBUG - evaluating initial population
-2024-08-03 20:50:27,373 - inspyred.ec - DEBUG - unable to pickle args parameter statistics_file in parallel_evaluation_mp
-2024-08-03 20:50:27,373 - inspyred.ec - DEBUG - unable to pickle args parameter individuals_file in parallel_evaluation_mp
-2024-08-03 20:50:27,373 - inspyred.ec - DEBUG - unable to pickle args parameter _ec in parallel_evaluation_mp
-2024-08-03 20:50:27,367 - inspyred.ec - DEBUG - generating initial population
-2024-08-03 20:50:27,368 - inspyred.ec - DEBUG - evaluating initial population
-2024-08-03 20:50:27,373 - inspyred.ec - DEBUG - unable to pickle args parameter statistics_file in parallel_evaluation_mp
-2024-08-03 20:50:27,373 - inspyred.ec - DEBUG - unable to pickle args parameter individuals_file in parallel_evaluation_mp
-2024-08-03 20:50:27,373 - inspyred.ec - DEBUG - unable to pickle args parameter _ec in parallel_evaluation_mp
-2024-08-03 20:50:27,367 - inspyred.ec - DEBUG - generating initial population
-2024-08-03 20:50:27,368 - inspyred.ec - DEBUG - evaluating initial population
-2024-08-03 20:50:27,373 - inspyred.ec - DEBUG - unable to pickle args parameter statistics_file in parallel_evaluation_mp
-2024-08-03 20:50:27,373 - inspyred.ec - DEBUG - unable to pickle args parameter individuals_file in parallel_evaluation_mp
-2024-08-03 20:50:27,373 - inspyred.ec - DEBUG - unable to pickle args parameter _ec in parallel_evaluation_mp
-2024-08-03 20:50:27,367 - inspyred.ec - DEBUG - generating initial population
-2024-08-03 20:50:27,368 - inspyred.ec - DEBUG - evaluating initial population
-2024-08-03 20:50:27,373 - inspyred.ec - DEBUG - unable to pickle args parameter statistics_file in parallel_evaluation_mp
-2024-08-03 20:50:27,373 - inspyred.ec - DEBUG - unable to pickle args parameter individuals_file in parallel_evaluation_mp
-2024-08-03 20:50:27,373 - inspyred.ec - DEBUG - unable to pickle args parameter _ec in parallel_evaluation_mp
+2024-08-24 20:06:07,940 - inspyred.ec - DEBUG - generating initial population
+2024-08-24 20:06:07,940 - inspyred.ec - DEBUG - evaluating initial population
+2024-08-24 20:06:07,941 - inspyred.ec - DEBUG - unable to pickle args parameter statistics_file in parallel_evaluation_mp
+2024-08-24 20:06:07,941 - inspyred.ec - DEBUG - unable to pickle args parameter individuals_file in parallel_evaluation_mp
+2024-08-24 20:06:07,941 - inspyred.ec - DEBUG - unable to pickle args parameter _ec in parallel_evaluation_mp

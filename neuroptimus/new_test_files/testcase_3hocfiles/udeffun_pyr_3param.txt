@@ -1,0 +1,10 @@
+def usr_fun(self,v):
+#2
+#cm
+#Ra
+	for sec in h.allsec():
+		sec.cm=v[0]
+		sec.Ra=v[1]
+		for seg in sec:
+			seg.g_pas=0.00002
+			seg.e_pas=-65
